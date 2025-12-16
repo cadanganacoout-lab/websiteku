@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Kelas 10 RPL 1</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <img
+        src="foto/logo smk.png"
+        alt="Logo SMK PGRI 2 Ponorogo"
+        class="logo" />
+      <h1>X RPL 1</h1>
+      <p>REKAYASA PERANGKAT LUNAK - SMK PGRI 2 PONOROGO</p>
+    </header>
+    <main class="container">
+      <div class="grid-wrapper" id="student-grid"></div>
+    </main>
+    <div class="modal-overlay" id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-btn" onclick="closeModal()">&times;</button>
+          <img src="" alt="Foto Siswa" id="modal-img" class="modal-img" />
+          <h2 id="modal-name">Nama Siswa</h2>
+          <span
+            id="modal-role"
+            style="
+              background: rgba(255, 255, 255, 0.2);
+              padding: 2px 10px;
+              border-radius: 10px;
+              font-size: 0.9rem;
+            ">
+            Siswa
+          </span>
+        </div>
+        <div class="modal-body">
+          <div class="info-group">
+            <span class="info-label">📍 Alamat</span>
+            <span class="info-value" id="modal-address">Jl. Contoh No. 1</span>
+          </div>
+          <div class="info-group">
+            <span class="info-label">💻 Keahlian</span>
+            <div class="info-value" id="modal-skills">HTML, CSS</div>
+          </div>
+          <div class="info-group">
+            <span class="info-label">🎮 Hobi</span>
+            <span class="info-value" id="modal-hobby">Bermain Game</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
