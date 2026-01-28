@@ -19,28 +19,30 @@ main-contentt {
   margin-bottom: 30px;
   color: #fdfdfd;
   background: linear-gradient(135deg, #1e3c72 0%, #982a94 100%);
-  padding: 15px;  
+  padding: 15px;
   border-radius: 10px;
   width: 100%;
-  box-sizing: border-box;
-  border-radius: 8px;
 }
+
 .flex-container {
   display: flex;
-  grid-template-columns: repeat(auto-fill, minmax(50%, 2fr));
+  flex-wrap: wrap;
+  flex-direction: row;
   gap: auto;
+  object-fit: fill;
+  cursor: pointer;
+  position: relative;
 }
 .cardd {
   width: 325px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin: 20px;
+  box-shadow: 0 4px 8px rgba(247, 18, 18, 0.2);
+  margin: 12px;
 }
 .cardd img {
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 200px;
+  object-fit: auto;
+  
 }
 
 header {

@@ -1,4 +1,12 @@
 const students = [
+    {
+    name: "Bapak Irfan",
+    role: "KAKOMLI IT",
+    address: "-",
+    skills: ["", "-", "-"],
+    hobby: "-",
+    photo: "asset foto/sementara.png",
+  },
   {
     name: "Bapak Andies Pramudiyantoro, S.Kom",
     role: "Wali Kelas",
@@ -33,7 +41,7 @@ const students = [
   },
   {
     name: "Alexa Aditya Cindra Dewi.",
-    role: "Siswa",
+    role: "Sekretaris",
     address: "-",
     skills: ["-"],
     hobby: "-",
@@ -81,7 +89,7 @@ const students = [
   },
   {
     name: "Candy Al Azka",
-    role: "Siswa",
+    role: "Bendahara",
     address: "-",
     skills: ["-"],
     hobby: "-",
@@ -89,7 +97,7 @@ const students = [
   },
   {
     name: "Celsia Ramadhani",
-    role: "Siswa",
+    role: "Persensi",
     address: "-",
     skills: ["-"],
     hobby: "-",
@@ -161,7 +169,7 @@ const students = [
   },
   {
     name: "Hendri Setiawana",
-    role: "Siswa",
+    role: "Persensi",
     address: "",
     skills: [""],
     hobby: "",
@@ -177,7 +185,7 @@ const students = [
   },
   {
     name: "Julian Tri Pratama",
-    role: "Siswa",
+    role: "Ketua Kelas",
     address: "-",
     skills: ["-"],
     hobby: "-",
@@ -209,7 +217,7 @@ const students = [
   },
   {
     name: "Meta Evrilya Giovanny",
-    role: "Siswa",
+    role: "Wakil Ketua Kelas",
     address: "-",
     skills: ["-"],
     hobby: "-",
@@ -233,7 +241,7 @@ const students = [
   },
   {
     name: "Ragil Bagus Nugroho",
-    role: "Siswa",
+    role: "Bendahara",
     address: "-",
     skills: ["-"],
     hobby: "-",
@@ -273,7 +281,7 @@ const students = [
   },
   {
     name: "Sulthan Pasha Ibrahim Sukarno",
-    role: "Siswa",
+    role: "Sekretaris",
     address: "-",
     skills: ["-"],
     hobby: "-",
