@@ -9,6 +9,10 @@ body {
   background-color: #f0f2f5;
   color: #333;
 }
+main-contentt {
+  position: center;
+  display: flex;
+}
 .card-container {
   display: flex;
   flex-wrap: absolute;
@@ -16,7 +20,7 @@ body {
   margin-top: 100px;
   position: relative;
 }
-.card {
+.cardd {
   width: 325px;
   background-color: #f0f0f0;
   border-radius: 8px;
@@ -24,7 +28,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   margin: 20px;
 }
-.card img {
+.cardd img {
   width: 100%;
   height: auto;
 }
@@ -46,7 +50,8 @@ nav {
 
 .header-img {
   image-orientation: flex;
-  position: relative;
+  position: flex;
+  display: center;
 }
 
 header h1 {
