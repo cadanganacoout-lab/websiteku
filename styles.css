@@ -22,7 +22,8 @@ main-contentt {
   padding: 15px;  
   border-radius: 10px;
   width: 100%;
-
+  box-sizing: border-box;
+  border-radius: 8px;
 }
 .flex-container {
   display: flex;
