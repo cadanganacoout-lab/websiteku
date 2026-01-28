@@ -27,7 +27,7 @@ main-contentt {
 .flex-container {
   display: flex;
   grid-template-columns: repeat(auto-fill, minmax(50%, 2fr));
-  gap: 15px;
+  gap: auto;
 }
 .cardd {
   width: 325px;
@@ -41,9 +41,7 @@ main-contentt {
   width: 100%;
   height: auto;
 }
-.card-content {
-  padding: 16px;
-}
+
 header {
   background: linear-gradient(135deg, #1e3c72 0%, #842a98 100%);
   color: white;
