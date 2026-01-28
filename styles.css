@@ -13,12 +13,21 @@ main-contentt {
   position: center;
   display: flex;
 }
-.card-container {
+.fotoKelas {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  color: #fdfdfd;
+  background: linear-gradient(135deg, #1e3c72 0%, #982a94 100%);
+  padding: 15px;  
+  border-radius: 10px;
+  width: 100%;
+
+}
+.flex-container {
   display: flex;
-  flex-wrap: absolute;
-  justify-content: wrap;
-  margin-top: 100px;
-  position: relative;
+  grid-template-columns: repeat(auto-fill, minmax(50%, 2fr));
+  gap: 15px;
 }
 .cardd {
   width: 325px;
@@ -295,4 +304,5 @@ footer {
   text-align: center;
   padding: 20px;
   width: 100%;
+  position: relative;
 }
