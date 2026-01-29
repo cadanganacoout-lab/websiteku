@@ -1,6 +1,6 @@
 const students = [
-    {
-    name: "Bapak Irfan",
+  {
+    name: "Bapak Irfan S.Kom",
     role: "KAKOMLI IT",
     address: "-",
     skills: ["", "-", "-"],
@@ -341,3 +341,83 @@ modal.addEventListener("click", (e) => {
 });
 
 renderCards();
+function tampilkanNilai() {
+  const outputElement = document.getElementById("outputNilai");
+
+  if (outputElement.style.display === "block") {
+    outputElement.style.display = "none";
+  } else {
+    outputElement.style.display = "block";
+  }
+}
+
+function TombolMenu() {
+  const menu = document.getElementById("menu");
+  menu.classList.toggle("open");
+}
+
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
+
+window.addEventListener("scroll", () => {
+  const header = document.getElementById("header");
+  if (window.scrollY > 50) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+});
+
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
+function showSlide(index) {
+  slides.forEach((slide) => slide.classList.remove("active"));
+  slides[index].classList.add("active");
+}
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+}
+setInterval(nextSlide, 3000);
+
+function playVideo() {
+  const video = document.getElementById("myVideo");
+  const overlay = document.getElementById("videoOverlay");
+  video.play();
+  overlay.style.opacity = "0";
+  setTimeout(() => (overlay.style.display = "none"), 500);
+}
+
+function createRipple(event) {
+  const button = event.currentTarget;
+  const circle = document.createElement("span");
+  const diameter = Math.max(button.clientWidth, button.clientHeight);
+  const radius = diameter / 2;
+  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+  circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+  circle.classList.add("ripple");
+  button.appendChild(circle);
+  setTimeout(() => circle.remove(), 600);
+}
+
+const scrollElements = document.querySelectorAll(".scroll-element");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    }
+  });
+});
+scrollElements.forEach((el) => observer.observe(el));
+
+window.addEventListener("scroll", () => {
+  const skills = document.querySelectorAll(".skill-fill");
+  skills.forEach((skill) => {
+    const rect = skill.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      skill.classList.add("animate");
+    }
+  });
+});

@@ -6,8 +6,17 @@
 }
 
 body {
-  background-color: #f0f2f5;
-  color: #333;
+  background: linear-gradient(
+    45deg,
+    #070068,
+    #070068,
+    #070068,
+    #070068,
+    #2c1746,
+    #2c1746,
+    #2c1746,
+    #2c1746
+  );
 }
 main-contentt {
   position: center;
@@ -18,35 +27,39 @@ main-contentt {
   margin-top: 30px;
   margin-bottom: 30px;
   color: #fdfdfd;
-  background: linear-gradient(135deg, #1e3c72 0%, #982a94 100%);
+  background: linear-gradient(135deg, #3e66b2 0%, #9b1cc2 100%);
   padding: 15px;
   border-radius: 10px;
   width: 100%;
 }
-
 .flex-container {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
-  gap: auto;
+  flex-direction: initial;
+  gap: fill;
   object-fit: fill;
   cursor: pointer;
   position: relative;
+  border-radius: 100%;
 }
+
 .cardd {
   width: 325px;
-  box-shadow: 0 4px 8px rgba(247, 18, 18, 0.2);
+  box-shadow: 8px 16px 32px rgba(109, 131, 227, 0.2);
+  border-image: 0 4px 8px rgba(182, 71, 196, 0.2);
   margin: 12px;
 }
 .cardd img {
   width: auto;
-  height: 200px;
-  object-fit: auto;
-  
+  height: 170px;
+  object-fit: fill;
+  object-position: relative;
+  inline-size: auto;
+  image-resolution: initial;
 }
 
 header {
-  background: linear-gradient(135deg, #1e3c72 0%, #842a98 100%);
+  background: linear-gradient(135deg, #293b5d 0%, #69217a 100%);
   color: white;
   text-align: center;
   padding: 40px 20px;
@@ -87,7 +100,18 @@ header p {
 }
 
 .student-card {
-  background: rgb(230, 228, 236);
+  background: linear-gradient(
+    45deg,
+    #630d95,
+    #ba0a94,
+    #8b5b9e,
+    #7766d5,
+    #9e2365,
+    #a200ff,
+    #7f3b9a,
+    #ba0a94,
+    #630d95
+  );
   border-radius: 12px;
   padding: 20px;
   text-align: center;
@@ -98,7 +122,7 @@ header p {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  border-top: 5px solid #3e7fef;
+  border-top: 5px solid #a82fc6;
 }
 
 .student-card:hover {
@@ -111,14 +135,14 @@ header p {
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #3e7fef;
+  border: 3px solid #a82fc6;
   margin-bottom: 15px;
 }
 
 .student-name {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #102650;
+  color: #fffdfd;
   margin-bottom: 5px;
 }
 
@@ -135,7 +159,7 @@ header p {
 .click-hint {
   margin-top: 15px;
   font-size: 0.8rem;
-  color: #474545;
+  color: #fbfbfb;
 }
 
 .modal-overlay {
@@ -161,7 +185,7 @@ header p {
 }
 
 .modal-content {
-  background: rgb(242, 240, 240);
+  background: linear-gradient(135deg, #859fcb 0%, #9a0e95 100%);
   width: 100%;
   max-width: 500px;
   border-radius: 15px;
@@ -176,7 +200,18 @@ header p {
 }
 
 .modal-header {
-  background: linear-gradient(135deg, #749dea 0%, #a35fc5 100%);
+  background: linear-gradient(
+    45deg,
+    #0d8795,
+    #ba0a94,
+    #8b5b9e,
+    #d5c166,
+    #9e2365,
+    #a200ff,
+    #3b9a5b,
+    #ba0a94,
+    #8c1756
+  );
   padding: 20px;
   text-align: center;
   color: white;
@@ -206,7 +241,7 @@ header p {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  border: 4px solid rgb(120, 128, 172);
+  border: 4px solid rgb(9, 46, 255);
   object-fit: cover;
   margin-bottom: 10px;
 }
@@ -227,7 +262,7 @@ header p {
 
 .info-label {
   font-weight: bold;
-  color: #555;
+  color: #ffffff;
   display: block;
   margin-bottom: 5px;
 }
@@ -301,7 +336,7 @@ header p {
 }
 
 footer {
-  background: linear-gradient(135deg, #1e3c72 0%, #982a94 100%);
+  background: linear-gradient(135deg, #3b30cd 0%, #802a98 100%);
   text-align: center;
   padding: 20px;
   width: 100%;
