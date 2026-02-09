@@ -5,7 +5,7 @@ const students = [
     address: "-",
     skills: ["", "-", "-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto guru/sementara.png",
   },
   {
     name: "Bapak Andies Pramudiyantoro, S.Kom",
@@ -13,7 +13,7 @@ const students = [
     address: "-",
     skills: ["Manajemen Kelas", "-", "-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto guru/sementara.png",
   },
   {
     name: "Affandi Fathurrahman",
@@ -21,7 +21,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Ahmad Barrak Neil Fadli H.",
@@ -29,7 +29,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Alecia Poppy Shakira Ayu K.",
@@ -37,7 +37,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Alexa Aditya Cindra Dewi.",
@@ -45,7 +45,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Amanda Cinthya Kasih",
@@ -53,7 +53,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Ardilla Wahyuning Putri",
@@ -61,7 +61,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Aretha Maulina Noviatin",
@@ -69,7 +69,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Atha Thandagra Suryansyah",
@@ -77,7 +77,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: `asset foto/sementara.png`,
+    photo: `asset foto/asset foto siswa/sementara.png`,
   },
   {
     name: "Bagas Ardiansyah",
@@ -85,7 +85,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Candy Al Azka",
@@ -93,7 +93,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Celsia Ramadhani",
@@ -101,7 +101,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Celvin Yoga Alvino",
@@ -109,7 +109,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Dimas Riang Ilham Saputra",
@@ -117,7 +117,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/muji.png",
   },
   {
     name: "Diva Ayu Permata ",
@@ -125,7 +125,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Ena Zivanna Idelia Gita",
@@ -133,7 +133,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Ficko Adiputra Perdana",
@@ -141,7 +141,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "bantai ade-adean cs",
-    photo: "asset foto/eko.png",
+    photo: "asset foto/asset foto siswa/eko.png",
   },
   {
     name: "Gayuh Gita Yuliana Natasya",
@@ -149,7 +149,7 @@ const students = [
     address: "jangan lupa minum",
     skills: ["gaada"],
     hobby: "gaming",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Gilang Nur Maulida Faid",
@@ -157,7 +157,7 @@ const students = [
     address: "pengen dadi ultramen",
     skills: ["Gaming", "Coding", "Reading"],
     hobby: "Game, baca manhwa, coding, turu",
-    photo: "asset foto/apalah.png",
+    photo: "asset foto/asset foto siswa/apalah.png",
   },
   {
     name: "Helcia Andika Putri",
@@ -165,7 +165,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Hendri Setiawana",
@@ -173,7 +173,7 @@ const students = [
     address: "",
     skills: [""],
     hobby: "",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Ilham Rofiq Ananda Barocta",
@@ -181,7 +181,7 @@ const students = [
     address: "ora ruh",
     skills: ["main gripen"],
     hobby: "main gripen",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Julian Tri Pratama",
@@ -189,7 +189,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Kenza Pratama",
@@ -197,7 +197,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Khaula Nendra Sukma A",
@@ -205,7 +205,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "coli",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Muhammad Akbar Fikriansyah",
@@ -213,7 +213,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Meta Evrilya Giovanny",
@@ -221,7 +221,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Nabila `Atha Nur Alfiyah",
@@ -229,7 +229,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Nurul Safika",
@@ -237,7 +237,7 @@ const students = [
     address: "one day i am gonna grow a wings.",
     skills: ["-"],
     hobby: "turu, makan, mencoba hal baru",
-    photo: "asset foto/bakekok.png",
+    photo: "asset foto/asset foto siswa/bakekok.png",
   },
   {
     name: "Ragil Bagus Nugroho",
@@ -245,7 +245,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Ragil Satria Risdiyanto",
@@ -253,7 +253,7 @@ const students = [
     address: "-",
     skills: [" ngloooco"],
     hobby: "lihat bokep",
-    photo: "asset foto/ragel edan.png",
+    photo: "asset foto/asset foto siswa/ragel edan.png",
   },
   {
     name: "Relyta Triya Ayu Lestari",
@@ -261,7 +261,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Rifky Aditya Saputra",
@@ -269,7 +269,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Satria Pradika Bayu Pratama",
@@ -277,7 +277,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Sulthan Pasha Ibrahim Sukarno",
@@ -285,7 +285,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/sementara.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
 ];
 
