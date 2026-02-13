@@ -11,79 +11,92 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Data Kelas 10 RPL 1</title>
 </head>
-
 <body>
-  <header>
-    <section id="Home" class="skills scroll-element"></section>
-    <div class="header-img">
-      <img src="asset foto/asset logo sekolah/logo smk.png" alt="Logo SMK PGRI 2 Ponorogo" class="logo" />
+  <section id="Home" class="scrollToSection">
+    <header id="header">
+      <nav>
+        <div class="logo-nav">
+          <span class="logo-nav-text">SMK PGRI 2 PONOROGO</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#Home">Home</a></li>
+          <li><a href="#stuktur">Struktur</a></li>
+          <li><a href="#album">Album</a></li>
+          <li><a href="#contact">contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="background-header">
+      <div class="img-header">
+      <img src="asset foto/asset logo sekolah/logo smk.png" alt="Logo SMK PGRI 2 Ponorogo" class="img-header" />
+      </div>
+      <h2>X RPL 1</h2>
+      <p>REKAYASA PERANGKAT LUNAK - SMK PGRI 2 PONOROGO</p>
     </div>
-    <h2>X RPL 1</h2>
-    <p>REKAYASA PERANGKAT LUNAK - SMK PGRI 2 PONOROGO</p>
-  </header>
-  <div class="pembatas1">
-    <h1>Struktur Kelas</h1>
-  </div>
-  <main class="container">
-    <div class="grid-wrapper" id="student-grid"></div>
-  </main>
-  <div class="modal-overlay" id="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button class="close-btn" onclick="closeModal()">&times;</button>
-        <img src="" alt="Foto Siswa" id="modal-img" class="modal-img" />
-        <h2 id="modal-name">Nama Siswa</h2>
-        <span id="modal-role" style="
+    <div class="pembatas1" id="stuktur">
+      <h1>Struktur Kelas</h1>
+    </div>
+    <main class="container">
+      <div class="grid-wrapper" id="student-grid"></div>
+    </main>
+    <div class="modal-overlay" id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-btn" onclick="closeModal()">&times;</button>
+          <img src="" alt="Foto Siswa" id="modal-img" class="modal-img" />
+          <h2 id="modal-name">Nama Siswa</h2>
+          <span id="modal-role" style="
               background: rgba(255, 255, 255, 0.2);
               padding: 2px 10px;
               border-radius: 10px;
               font-size: 0.9rem;
             ">
-          Siswa
-        </span>
+            Siswa
+          </span>
+        </div>
+        <div class="modal-body">
+          <div class="info-group">
+            <span class="info-label">📖 Catatan</span>
+            <span class="info-value" id="modal-address">Aku suka Coding</span>
+          </div>
+          <div class="info-group">
+            <span class="info-label">💻 Keahlian</span>
+            <div class="info-value" id="modal-skills">HTML, CSS</div>
+          </div>
+          <div class="info-group">
+            <span class="info-label">🎮 Hobi</span>
+            <span class="info-value" id="modal-hobby">Bermain Game</span>
+          </div>
+        </div>
       </div>
-      <div class="modal-body">
-        <div class="info-group">
-          <span class="info-label">📖 Catatan</span>
-          <span class="info-value" id="modal-address">Aku suka Coding</span>
-        </div>
-        <div class="info-group">
-          <span class="info-label">💻 Keahlian</span>
-          <div class="info-value" id="modal-skills">HTML, CSS</div>
-        </div>
-        <div class="info-group">
-          <span class="info-label">🎮 Hobi</span>
-          <span class="info-value" id="modal-hobby">Bermain Game</span>
-        </div>
+    </div>
+    <div class="pembatas2" id="album">
+      <h1>Album Kelas X RPL !</h1>
+    </div>
+    <div class="carousel">
+      <div class="group">
+        <div class="cardd"><img src="asset foto/asset foto album/dirumahpakandies.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/agit.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/bintalsik.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/bintalsik2.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/mujahadah.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/withpakendi.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/fotobersama.png" alt=""></div>
+      </div>
+      <div aria-hidden class="group">
+        <div class="cardd"><img src="asset foto/asset foto album/dirumahpakandies.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/agit.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/bintalsik.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/bintalsik2.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/mujahadah.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/withpakendi.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/agit.png" alt=""></div>
       </div>
     </div>
-  </div>
-  <div class="pembatas2">
-    <h1>Album Kelas X RPL !</h1>
-  </div>
-  <div class="carousel">
-    <div class="group">
-      <div class="cardd"><img src="asset foto/asset foto album/dirumahpakandies.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/agit.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/bintalsik.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/bintalsik2.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/mujahadah.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/withpakendi.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/fotobersama.png" alt=""></div>
-    </div>
-        <div aria-hidden class="group">
-      <div class="cardd"><img src="asset foto/asset foto album/dirumahpakandies.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/agit.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/bintalsik.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/bintalsik2.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/mujahadah.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/withpakendi.png" alt=""></div>
-      <div class="cardd"><img src="asset foto/asset foto album/agit.png" alt=""></div>
-    </div>
-  </div>
+  </section>
 </body>
 <footer>
-  <div class="footerContainer">
+  <div class="footerContainer" id="contact">
     <div class="socialIcons">
       <a href="https://www.facebook.com/SMK-PGRI-2-Ponorogo-231334446887982/">
         <i class="fa-brands fa-facebook"></i>

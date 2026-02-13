@@ -1,6 +1,6 @@
 const students = [
   {
-    name: "Bapak Irfan S.Kom",
+    name: "Bapak Irfan Priyono S.Kom",
     role: "KAKOMLI IT",
     address: "-",
     skills: ["", "-", "-"],
@@ -117,7 +117,7 @@ const students = [
     address: "-",
     skills: ["-"],
     hobby: "-",
-    photo: "asset foto/asset foto siswa/muji.png",
+    photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
     name: "Diva Ayu Permata ",
@@ -276,7 +276,7 @@ const students = [
     role: "Siswa",
     address: "-",
     skills: ["-"],
-    hobby: "-",
+    hobby: "",
     photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
@@ -288,6 +288,10 @@ const students = [
     photo: "asset foto/asset foto siswa/sementara.png",
   },
 ];
+
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
 
 const gridContainer = document.getElementById("student-grid");
 const modal = document.getElementById("modal");

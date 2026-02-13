@@ -15,8 +15,67 @@ body {
     #2c1746,
     #2c1746,
     #2c1746,
-    #2c1746
+    #554469
   );
+}
+.background-header {
+  background-image: url("asset foto/asset logo sekolah/birumerah.png");
+  image-resolution: 100dpi;
+  background-size: cover;
+  background-position: center;
+  padding-top: 100px;
+  padding-bottom: 270px;
+}
+.img-header {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+header {
+  color: rgb(255, 255, 255);
+  padding: 20px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  transition: background 0.3s ease;
+}
+.logo-nav-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fdfdfd;
+}
+.logo-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #293b5d 0%, #69217a 100%);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 10px 10px;
+}
+nav ul li a {
+  text-decoration: none;
+  color: #fdfdfd;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  border-radius: 2px 8px 10px 2px;
+  text-shadow: #0e0e0e 2px 2px 4px;
+  cursor: pointer;
+}
+@media (max-width: 524px) {
+  .hideonmobile {
+    display: none;
+  }
 }
 h2 {
   text-align: center;
@@ -79,7 +138,7 @@ main-contentt {
   align-items: center;
   justify-content: center;
   gap: 1em;
-  animation: spin 26s infinite linear;
+  animation: spin 35s infinite linear;
   padding-right: 0.5em;
 }
 .cardd {
@@ -100,33 +159,6 @@ main-contentt {
   to {
     translate: -100%;
   }
-}
-header {
-  background: linear-gradient(135deg, #293b5d 0%, #69217a 100%);
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.header-img {
-  image-orientation: flex;
-  position: flex;
-  display: center;
-}
-
-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-}
-
-header p {
-  font-size: 1.1rem;
-  opacity: 0.9;
 }
 
 .container {
