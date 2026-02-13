@@ -51,14 +51,15 @@ header {
   gap: 10px;
 }
 nav {
-  display: flex;
+  display: relative;
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
+  border-bottom: 2px solid #e7e7e7;
   background: linear-gradient(135deg, #293b5d 0%, #69217a 100%);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 20px 20px;
 }
 nav ul li a {
   text-decoration: none;
@@ -70,7 +71,7 @@ nav ul li a {
   gap: 20px;
   border-radius: 2px 8px 10px 2px;
   text-shadow: #0e0e0e 2px 2px 4px;
-  cursor: pointer;
+  flex-wrap: wrap;
 }
 @media (max-width: 524px) {
   .hideonmobile {
