@@ -22,6 +22,7 @@ body {
   background-position: center;
   padding-top: 100px;
   padding-bottom: 270px;
+  backdrop-filter: blur(12px);
 }
 .img-header {
   display: flex;
@@ -50,11 +51,9 @@ header {
 nav {
   background-color: rgb(83, 80, 233);
   border-radius: 10px;
-  padding: 0 30px;
+  padding: 0 20px;
   width: 100%;
   height: 70px;
-  backdrop-filter: blur(12px);
-  position: fixed;
 }
 nav ul {
   width: 100%;
@@ -73,7 +72,7 @@ nav a {
   display: flex;
   align-items: center;
   color: rgb(251, 251, 251);
-  font-size: 1.5rem;
+  font-size: 2rem;
   transition: background-color 0.3s ease;
   position: flex;
 }
