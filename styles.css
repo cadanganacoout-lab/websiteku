@@ -72,7 +72,7 @@ nav a {
   display: flex;
   align-items: center;
   color: rgb(251, 251, 251);
-  font-size: 1rem;
+  font-size: 1.5rem;
   transition: background-color 0.3s ease;
   position: flex;
 }
