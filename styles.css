@@ -4,19 +4,16 @@
   box-sizing: border-box;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-
+html {
+  scroll-behavior: smooth;
+  min-height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
 body {
-  background: linear-gradient(
-    45deg,
-    #070068,
-    #070068,
-    #070068,
-    #070068,
-    #2c1746,
-    #2c1746,
-    #2c1746,
-    #554469
-  );
+  background: linear-gradient(45deg, #24262b, #322447, #1f283f, #24262b);
 }
 .background-header {
   background-image: url("asset foto/asset logo sekolah/birumerah.png");
@@ -51,31 +48,76 @@ header {
   gap: 10px;
 }
 nav {
-  display: relative;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-  border-bottom: 2px solid #e7e7e7;
-  background: linear-gradient(135deg, #293b5d 0%, #69217a 100%);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 0 0 20px 20px;
+  background-color: rgb(83, 80, 233);
+  border-radius: 10px;
+  padding: 0 30px;
+  width: 100%;
+  height: 70px;
+  backdrop-filter: blur(12px);
+  position: fixed;
 }
-nav ul li a {
-  text-decoration: none;
-  color: #fdfdfd;
-}
-.nav-links {
+nav ul {
+  width: 100%;
   list-style: none;
   display: flex;
-  gap: 20px;
-  border-radius: 2px 8px 10px 2px;
-  text-shadow: #0e0e0e 2px 2px 4px;
-  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
 }
-@media (max-width: 524px) {
-  .hideonmobile {
+nav li {
+  height: 50px;
+}
+nav a {
+  height: 140%;
+  padding: 0 30px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: rgb(251, 251, 251);
+  font-size: 1.5rem;
+  transition: background-color 0.3s ease;
+  position: flex;
+}
+nav a:hover {
+  background-color: #ffffff;
+}
+nav li:first-child {
+  margin-right: auto;
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 250px;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.sidebar li {
+  width: 100%;
+}
+.sidebar a {
+  width: 100%;
+}
+.menu-button {
+  display: none;
+}
+@media (max-width: 800px) {
+  .hideOnMobile {
     display: none;
+  }
+  .menu-button {
+    display: block;
+  }
+}
+@media (max-width: 400px) {
+  .sidebar {
+    width: 100%;
   }
 }
 h2 {
@@ -101,7 +143,7 @@ main-contentt {
   margin-top: 30px;
   margin-bottom: 30px;
   color: #fdfdfd;
-  background: linear-gradient(135deg, #072864 0%, #ad37d1 100%);
+  background: #4e63cd;
   padding: 15px;
   border-radius: 10px;
   width: 100%;
@@ -115,7 +157,7 @@ main-contentt {
   margin-top: 30px;
   margin-bottom: 30px;
   color: #fdfdfd;
-  background: linear-gradient(135deg, #bf42e8 0%, #1b1177 100%);
+  background: #4e63cd;
   padding: 15px;
   border-radius: 10px;
   width: 100%;
@@ -128,7 +170,7 @@ main-contentt {
   margin: 100px auto;
   width: 90%;
   display: flex;
-  border: 5px solid #2d1464;
+  border: 5px solid #272728;
   overflow-x: auto;
 }
 .carousel::-webkit-scrollbar {
@@ -177,15 +219,15 @@ main-contentt {
 .student-card {
   background: linear-gradient(
     45deg,
-    #630d95,
-    #ba0a94,
-    #8b5b9e,
-    #7766d5,
-    #9e2365,
-    #a200ff,
-    #7f3b9a,
-    #ba0a94,
-    #630d95
+    #908a94,
+    #aa60ff,
+    #a699ac,
+    #725ae8,
+    #5257e8,
+    #6499e8,
+    #8c6e97,
+    #5500ff,
+    #ae9abb
   );
   border-radius: 12px;
   padding: 20px;
@@ -197,7 +239,7 @@ main-contentt {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  border-top: 5px solid #a82fc6;
+  border-top: 5px solid #2877ff;
 }
 
 .student-card:hover {
@@ -210,7 +252,7 @@ main-contentt {
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #a82fc6;
+  border: 3px solid #ffffff;
   margin-bottom: 15px;
 }
 
@@ -223,7 +265,7 @@ main-contentt {
 
 .student-role {
   display: inline-block;
-  background-color: #e3f2fd;
+  background-color: #ffffff;
   color: #0778fa;
   padding: 4px 12px;
   border-radius: 20px;
@@ -260,7 +302,7 @@ main-contentt {
 }
 
 .modal-content {
-  background: linear-gradient(135deg, #859fcb 0%, #9a0e95 100%);
+  background: linear-gradient(135deg, #9babc6 0%, #866c86 100%);
   width: 100%;
   max-width: 500px;
   border-radius: 15px;
@@ -275,21 +317,10 @@ main-contentt {
 }
 
 .modal-header {
-  background: linear-gradient(
-    45deg,
-    #0d8795,
-    #ba0a94,
-    #8b5b9e,
-    #d5c166,
-    #9e2365,
-    #a200ff,
-    #3b9a5b,
-    #ba0a94,
-    #8c1756
-  );
+  background: linear-gradient(45deg, #e8fcff, #b38bc1);
   padding: 20px;
   text-align: center;
-  color: white;
+  color: rgb(64, 51, 172);
   position: relative;
 }
 
@@ -366,54 +397,95 @@ main-contentt {
     width: 95%;
   }
 }
-.socialIcons {
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+body {
+  line-height: 1.5;
+  font-family: "Poppins", sans-serif;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.container {
+  max-width: 1170px;
+  margin: auto;
+}
+.row {
   display: flex;
-  justify-content: center;
-  width: 100%;
+  flex-wrap: wrap;
 }
-.socialIcons a {
-  text-decoration: none;
-  padding: 10px;
-  background-color: rgb(252, 252, 252);
-  margin: 10px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+ul {
+  list-style: none;
 }
-.socialIcons a i {
-  font-size: 2.3em;
-  color: #0f0f10;
-  opacity: 0.9;
+.footer {
+  background-color: #24262b;
+  padding: 70px 0;
 }
-
-.socialIcons a:hover {
-  background-color: #504f59;
-  transition: 0.5s;
+.footer-col {
+  width: 25%;
+  padding: 0 15px;
 }
-.socialIcons a:hover i {
-  color: white;
-  transition: 0.5s;
-}
-@media (max-width: 700px) {
-  .footerNav ul {
-    flex-direction: column;
-  }
-  .footerNav ul li {
-    width: 100%;
-    text-align: center;
-    margin: 10px;
-  }
-  .socialIcons a {
-    padding: 8px;
-    margin: 4px;
-  }
-}
-
-footer {
-  background: linear-gradient(135deg, #3b30cd 0%, #802a98 100%);
-  text-align: center;
-  padding: 20px;
-  width: 100%;
+.footer-col h4 {
+  font-size: 18px;
+  color: #ffffff;
+  text-transform: capitalize;
+  margin-bottom: 35px;
+  font-weight: 500;
   position: relative;
+}
+.footer-col h4::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  background-color: #3d1ee9;
+  height: 2px;
+  box-sizing: border-box;
+  width: 50px;
+}
+.footer-col ul li:not(:last-child) {
+  margin-bottom: 10px;
+}
+.footer-col ul li a {
+  font-size: 16px;
+  text-transform: capitalize;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 300;
+  color: #bbbbbb;
+  display: block;
+  transition: all 0.3s ease;
+}
+.footer-col ul li a:hover {
+  color: #ffffff;
+  padding-left: 8px;
+}
+.footer-col .social-links a {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 10px 10px 0;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  color: #ffffff;
+  transition: all 0.5s ease;
+}
+.footer-col .social-links a:hover {
+  color: #24262b;
+  background-color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .footer-col {
+    width: 50%;
+    margin-bottom: 30px;
+  }
+}
+@media (max-width: 574px) {
+  .footer-col {
+    width: 100%;
+  }
 }

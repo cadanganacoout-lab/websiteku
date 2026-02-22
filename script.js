@@ -288,6 +288,14 @@ const students = [
     photo: "asset foto/asset foto siswa/sementara.png",
   },
 ];
+function showSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.style.display = "flex";
+}
+function hideSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.style.display = "none";
+}
 
 function scrollToSection(id) {
   document.getElementById(id).scrollIntoView({ behavior: "smooth" });

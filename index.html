@@ -11,24 +11,38 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Data Kelas 10 RPL 1</title>
 </head>
+
 <body>
   <section id="Home" class="scrollToSection">
     <header id="header">
       <nav>
-        <div class="logo-nav">
-          <span class="logo-nav-text">SMK PGRI 2 PONOROGO</span>
-        </div>
-        <ul class="nav-links">
+        <ul class="sidebar">
+          <li onclick=hideSidebar()><a href="#auto"><svg xmlns="http://www.w3.org/2000/svg" height="26"
+                viewBox="0 96 960 960" width="26">
+                <path
+                  d="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" />
+              </svg></a></li>
           <li><a href="#Home">Home</a></li>
           <li><a href="#stuktur">Struktur</a></li>
           <li><a href="#album">Album</a></li>
-          <li><a href="#contact">contact</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <ul>
+          <li><a href="#">SMK PGRI 2 PONOROGO</a></li>
+          <li class="hideOnMobile"><a href="#Home">Home</a></li>
+          <li class="hideOnMobile"><a href="#stuktur">Sruktur</a></li>
+          <li class="hideOnMobile"><a href="#album">Album</a></li>
+          <li class="hideOnMobile"><a href="#contact">Contact</a></li>
+          <li class="menu-button" onclick=showSidebar()><a href="#auto"><svg xmlns="http://www.w3.org/2000/svg" height="26"
+                viewBox="0 96 960 960" width="26">
+                <path d="M120 816v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z" />
+              </svg></a></li>
         </ul>
       </nav>
     </header>
     <div class="background-header">
       <div class="img-header">
-      <img src="asset foto/asset logo sekolah/logo smk.png" alt="Logo SMK PGRI 2 Ponorogo" class="img-header" />
+        <img src="asset foto/asset logo sekolah/logo smk.png" alt="Logo SMK PGRI 2 Ponorogo" class="img-header" />
       </div>
       <h2>X RPL 1</h2>
       <p>REKAYASA PERANGKAT LUNAK - SMK PGRI 2 PONOROGO</p>
@@ -94,27 +108,40 @@
       </div>
     </div>
   </section>
-</body>
-<footer>
-  <div class="footerContainer" id="contact">
-    <div class="socialIcons">
-      <a href="https://www.facebook.com/SMK-PGRI-2-Ponorogo-231334446887982/">
-        <i class="fa-brands fa-facebook"></i>
-      </a>
-      <a href="https://www.instagram.com/official.smkpgri2ponorogo/">
-        <i class="fa-brands fa-instagram"></i>
-      </a>
-      <a href="https://twitter.com/bkksmkpgri2po">
-        <i class="fa-brands fa-twitter"></i>
-      </a>
-      <a href="https://smkpgri2ponorogo.sch.id/">
-        <i class="fa-brands fa-google-plus"></i>
-      </a>
-      <a href="https://www.youtube.com/@officialsmkspgri2ponorogo">
-        <i class="fa-brands fa-youtube"></i>
-      </a>
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="footer-col">
+          <h4>company</h4>
+          <ul>
+            <li><a href="#">about us</a></li>
+            <li><a href="https://smkpgri2ponorogo.sch.id/">part of</a></li>
+            <li><a href="#">privacy policy</a></li>
+            <li><a href="#">affiliate program</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>get help</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#"></a></li>
+            <li><a href="https://smkpgri2ponorogo.sch.id/contact/">contact us</a></li>
+            <li><a href="smkpgri2ponorogo@yahoo.com">email support</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>follow us</h4>
+          <div class="social-links">
+            <a href="https://www.facebook.com/SMK-PGRI-2-Ponorogo-231334446887982/"><i
+                class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/bkksmkpgri2po"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/official.smkpgri2ponorogo/"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@officialsmkspgri2ponorogo"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</footer>
+  </footer>
+</body>
 
 </html>
