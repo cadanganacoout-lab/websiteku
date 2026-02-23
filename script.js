@@ -181,7 +181,7 @@ const students = [
     address: "ora ruh",
     skills: ["main gripen"],
     hobby: "main gripen",
-    photo: "asset foto/asset foto siswa/sementara.png",
+    photo: "asset foto/asset foto siswa/download.png",
   },
   {
     name: "Julian Tri Pratama",
