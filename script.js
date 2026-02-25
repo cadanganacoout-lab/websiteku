@@ -26,9 +26,9 @@ const students = [
   {
     name: "Ahmad Barrak Neil Fadli H.",
     role: "Siswa",
-    address: "-",
-    skills: ["-"],
-    hobby: "-",
+    address: "urip iku urup",
+    skills: ["cosplay mayit"],
+    hobby: "turu",
     photo: "asset foto/asset foto siswa/sementara.png",
   },
   {
