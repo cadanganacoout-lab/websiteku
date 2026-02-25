@@ -235,8 +235,8 @@ const students = [
     name: "Nurul Safika",
     role: "Siswa",
     address: "one day i am gonna grow a wings.",
-    skills: ["-"],
-    hobby: "turu, makan, mencoba hal baru",
+    skills: ["-buat game anjaiii"],
+    hobby: "belajar jirrrr ",
     photo: "asset foto/asset foto siswa/bakekok.png",
   },
   {
