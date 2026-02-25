@@ -147,7 +147,7 @@ const students = [
     name: "Gayuh Gita Yuliana Natasya",
     role: "Siswa",
     address: "jangan lupa minum",
-    skills: ["gaada"],
+    skills: ["bisa bahasa hewan"],
     hobby: "gaming",
     photo: "asset foto/asset foto siswa/sementara.png",
   },

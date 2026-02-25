@@ -54,6 +54,7 @@ nav {
   padding: 0 20px;
   width: 100%;
   height: 70px;
+  border-bottom: #ffffff 7px solid;
 }
 nav ul {
   width: 100%;
@@ -420,6 +421,7 @@ ul {
 .footer {
   background-color: #24262b;
   padding: 70px 0;
+  border-top: 5px solid #3d1ee9;
 }
 .footer-col {
   width: 25%;
