@@ -243,7 +243,7 @@ const students = [
     name: "Ragil Bagus Nugroho",
     role: "Bendahara",
     address: "-",
-    skills: ["-"]
+    skills: ["-"],
     hobby: "-",
     photo: "asset foto/asset foto siswa/sementara.png",
   },
