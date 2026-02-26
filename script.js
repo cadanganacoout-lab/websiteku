@@ -149,7 +149,7 @@ const students = [
     address: "jangan lupa minum",
     skills: ["bisa bahasa hewan"],
     hobby: "gaming",
-    photo: "asset foto/asset foto siswa/sementara.png",
+    photo: "asset foto/asset foto siswa/gita.png",
   },
   {
     name: "Gilang Nur Maulida Faid",
