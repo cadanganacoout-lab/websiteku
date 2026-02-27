@@ -1,3 +1,15 @@
+<?php
+if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+    if ($page === 'login') {
+        include __DIR__ . '/login.php';
+        exit;
+    } elseif ($page === 'register') {
+        include __DIR__ . '/register.php';
+        exit;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 
