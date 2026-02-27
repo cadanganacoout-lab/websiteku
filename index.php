@@ -1,3 +1,15 @@
+<?php
+if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+    if ($page === 'login') {
+        include __DIR__ . '/login.php';
+        exit;
+    } elseif ($page === 'register') {
+        include __DIR__ . '/register.php';
+        exit;
+    }
+}
+?>
 <!doctype html>
 <html lang="id">
 
@@ -5,8 +17,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta property="og:image" content="https://kelasxrpl1.vercel.app/og-image.jpg">
-  <link rel="stylesheet" href="styles.css" />
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script src="assets/script.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -30,9 +42,11 @@
         <ul>
           <li><a href="#">NAVBAR</a></li>
           <li class="hideOnMobile"><a href="#Home">Home</a></li>
-          <li class="hideOnMobile"><a href="#stuktur">Sruktur</a></li>
+          <li class="hideOnMobile"><a href="#stuktur">Sruktur</a></li>  
           <li class="hideOnMobile"><a href="#album">Album</a></li>
           <li class="hideOnMobile"><a href="#contact">Contact</a></li>
+            <li class="hideOnMobile"><a href="?page=login">login</a></li>
+          <li class="hideOnMobile"><a href="?page=register">register</a></li>
           <li class="menu-button" onclick=showSidebar()><a href="#auto"><svg xmlns="http://www.w3.org/2000/svg" height="26"
                 viewBox="0 96 960 960" width="26">
                 <path d="M120 816v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z" />
