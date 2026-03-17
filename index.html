@@ -6,7 +6,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta property="og:image" content="https://kelasxrpl1.vercel.app/og-image.jpg">
-  <script src="script.js" defer></script>
+  <script src="main.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -142,9 +142,17 @@ h2 {
 p {
   text-align: center;
   margin-top: 10px;
-  font-size: 1.2rem;
+  font-size: 1.7rem;
   color: #fdfdfd;
   text-shadow: #000000 2px 2px 4px;
+  font-family: 'poppins', 'sans-serif';
+  text-transform: uppercase;
+  background: linear-gradient(to left, #d1f889, #ffffff, #44ecff, #c2ff8ded);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animateGradient 3s linear infinite;
 }
 main-contentt {
   position: center;
@@ -162,7 +170,19 @@ main-contentt {
 }
 .pembatas1 h1 {
   font-size: 3rem;
-  text-shadow: #000000 2px 2px 4px;
+  font-family: 'poppins', 'sans-serif';
+  text-transform: uppercase;
+  background: linear-gradient(to left, #d1f889, #ffffff, #000000, #c2ff8ded);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animateGradient 3s linear infinite;
+}
+@keyframes animateGradient {
+to{
+    background-position: 200% 50%;
+  }
 }
 .pembatas2 {
   text-align: center;
@@ -175,8 +195,15 @@ main-contentt {
   width: 100%;
 }
 .pembatas2 h1 {
-  font-size: 3rem;
-  text-shadow: #000000 2px 2px 4px;
+  font-size: 2.5rem;
+  font-family: 'poppins', 'sans-serif';
+  text-transform: uppercase;
+  background: linear-gradient(to left, #d1f889, #ffffff, #000000, #c2ff8ded);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animateGradient 4s linear infinite;
 }
 .carousel {
   margin: 100px auto;
@@ -193,7 +220,7 @@ main-contentt {
   align-items: center;
   justify-content: center;
   gap: 1em;
-  animation: spin 35s infinite linear;
+  animation: spin 36s infinite linear;
   padding-right: 0.5em;
 }
 .cardd {
@@ -519,7 +546,6 @@ ul {
           <li><a href="#album">Album</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="login.html">login</a></li>
-          <li><a href="register.html">daftar</a></li>
         </ul>
         <ul>
           <li><a href="#">NAVBAR</a></li>
@@ -528,7 +554,6 @@ ul {
           <li class="hideOnMobile"><a href="#album">Album</a></li>
           <li class="hideOnMobile"><a href="#contact">Contact</a></li>
           <li class="hideOnMobile"><a href="login.html">login</a></li>
-          <li class="hideOnMobile"><a href="register.html">register</a></li>
           <li class="menu-button" onclick=showSidebar()><a href="#auto"><svg xmlns="http://www.w3.org/2000/svg" height="26"
                 viewBox="0 96 960 960" width="26">
                 <path d="M120 816v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z" />
@@ -1030,6 +1055,13 @@ window.addEventListener("scroll", () => {
         <div class="cardd"><img src="asset foto/asset foto album/mujahadah.png" alt=""></div>
         <div class="cardd"><img src="asset foto/asset foto album/withpakendi.png" alt=""></div>
         <div class="cardd"><img src="asset foto/asset foto album/fotobersama.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/jaman majapahit.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/last mpls.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/opo i.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/pondokcwk.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/pondokcw.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/terawih.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/bukber.png" alt=""></div>
       </div>
       <div aria-hidden class="group">
         <div class="cardd"><img src="asset foto/asset foto album/dirumahpakandies.png" alt=""></div>
@@ -1038,7 +1070,14 @@ window.addEventListener("scroll", () => {
         <div class="cardd"><img src="asset foto/asset foto album/bintalsik2.png" alt=""></div>
         <div class="cardd"><img src="asset foto/asset foto album/mujahadah.png" alt=""></div>
         <div class="cardd"><img src="asset foto/asset foto album/withpakendi.png" alt=""></div>
-        <div class="cardd"><img src="asset foto/asset foto album/agit.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/fotobersama.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/jaman majapahit.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/last mpls.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/opo i.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/pondokcwk.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/pondokcw.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/terawih.png" alt=""></div>
+        <div class="cardd"><img src="asset foto/asset foto album/bukber.png" alt=""></div>
       </div>
     </div>
   </section>
