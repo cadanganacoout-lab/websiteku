@@ -1,7 +1,6 @@
 
 <!doctype html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -205,6 +204,14 @@ to{
   -webkit-text-fill-color: transparent;
   animation: animateGradient 4s linear infinite;
 }
+.vidio-container {
+  margin: 20px auto;
+  width: 95%;;
+  border: 3px solid #000000;
+  border-radius: 10px;
+  overflow: hidden;
+} 
+
 .carousel {
   margin: 100px auto;
   width: 90%;
@@ -544,20 +551,29 @@ ul {
           <li><a href="#Home">Home</a></li>
           <li><a href="#stuktur">Struktur</a></li>
           <li><a href="#album">Album</a></li>
+          <li><a href="#vidio">Vidio</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a href="login.html">login</a></li>
+          <li class="log-user" onclick="logpage()">
+            <a href="login.html">login</a>
+          </li>
         </ul>
         <ul>
           <li><a href="#">NAVBAR</a></li>
           <li class="hideOnMobile"><a href="#Home">Home</a></li>
           <li class="hideOnMobile"><a href="#stuktur">Sruktur</a></li>  
           <li class="hideOnMobile"><a href="#album">Album</a></li>
+          <li class="hideOnMobile"><a href="#vidio">Vidio</a></li>
           <li class="hideOnMobile"><a href="#contact">Contact</a></li>
-          <li class="hideOnMobile"><a href="login.html">login</a></li>
-          <li class="menu-button" onclick=showSidebar()><a href="#auto"><svg xmlns="http://www.w3.org/2000/svg" height="26"
-                viewBox="0 96 960 960" width="26">
+          <li class="hideOnMobile" onclick="logpage()">
+            <a href="login.html">login</a>
+          </li>
+          <li class="menu-button" onclick="showSidebar()">
+            <a href="#auto">
+              <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 96 960 960" width="26">
                 <path d="M120 816v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z" />
-              </svg></a></li>
+              </svg>
+            </a>
+          </li>
         </ul>
       </nav>
     </header>
@@ -905,6 +921,8 @@ function hideSidebar() {
   sidebar.style.display = "none";
 }
 
+
+
 function scrollToSection(id) {
   document.getElementById(id).scrollIntoView({ behavior: "smooth" });
 }
@@ -1079,6 +1097,15 @@ window.addEventListener("scroll", () => {
         <div class="cardd"><img src="asset foto/asset foto album/terawih.png" alt=""></div>
         <div class="cardd"><img src="asset foto/asset foto album/bukber.png" alt=""></div>
       </div>
+    </div>
+    <div class="pembatas1" id="vidio">
+      <h1>Vidio Random</h1>
+    </div>
+    <div class="vidio-container">
+      <video id="myVideo" width="100%" controls>
+        <source src="asset foto/assets vidio/ki.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     </div>
   </section>
   <footer class="footer" id="contact">
