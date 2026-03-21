@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "builds": [
+        {
+            "src": "KELASS/script.js",
+            "use": "@vercel/node",
+            "config": { 
+                "BuildsCommand": "npm install"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "KELASS/script.js"
+        }
+    ]
+}
