@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
     "version": 1,
     "builds": [
@@ -16,23 +15,4 @@
             "dest": "KELASS/script.js"
         }
     ]
-=======
-{
-    "version": 1,
-    "builds": [
-        {
-            "src": "KELASS/script.js",
-            "use": "@vercel/node",
-            "config": { 
-                "BuildsCommand": "npm install"
-            }
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "KELASS/script.js"
-        }
-    ]
->>>>>>> 402233d5f52496638f5a35231fc0ea7500d6b048
 }
