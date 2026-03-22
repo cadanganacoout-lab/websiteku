@@ -9,6 +9,7 @@
       {
         "link-name": "off"
       }
-    ]
+    ],
+    "meta-viewport": "off"
   }
 }
