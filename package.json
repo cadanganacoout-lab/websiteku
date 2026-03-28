@@ -2,9 +2,9 @@
   "name": "kelass",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "Api-Service": "node index.js",
+    "Api-Service": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/cadanganacoout-lab/websiteku#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "@tailwindcss/vite": "^4.2.2",
+    "express": "^5.2.1",
+    "tailwindcss": "^4.2.2"
   }
 }
