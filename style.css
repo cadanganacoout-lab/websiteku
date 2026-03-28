@@ -237,7 +237,7 @@ main-contentt {
   align-items: center;
   justify-content: center;
   gap: 1em;
-  animation: spin 36s infinite linear;
+  animation: spin 31s infinite linear;
   padding-right: 0.5em;
 }
 
