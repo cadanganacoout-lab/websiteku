@@ -2,7 +2,7 @@
 include 'config.php';
 
 if (isset($_POST['register'])) {
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $username = $_POST['username'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
@@ -13,15 +13,21 @@ if (isset($_POST['register'])) {
     }
 
     // 2. Cek apakah username sudah ada di database
-    $check_user = mysqli_query($conn, "SELECT username FROM users WHERE username = '$username'");
-    if (mysqli_num_rows($check_user) > 0) {
+    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
         echo "<script>alert('Username sudah digunakan, cari yang lain!'); window.location='register.php';</script>";
     } else {
         // 3. Enkripsi password sebelum disimpan (Keamanan Penting!)
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // 4. Masukkan ke database
-        $insert = mysqli_query($conn, "INSERT INTO users (username, password) VALUES ('$username', '$hashed_password')");
+        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+        $stmt->bind_param("ss", $username, $hashed_password);
+        $insert = $stmt->execute();
+        $stmt->close();
 
         if ($insert) {
             echo "<script>alert('Registrasi Berhasil! Silahkan Login.'); window.location='login.php';</script>";

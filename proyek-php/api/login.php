@@ -13,7 +13,10 @@
 <body>
     <div class="login-box">
         <h2>Login Admin</h2>
-        <form action="auth.php" method="POST">
+<form action="auth.php" method="POST">
+            <?php if (isset($_SESSION['login_error']) && !empty($_SESSION['login_error'])) { ?>
+                <div style="color: red; margin-bottom: 10px;"><?php echo $_SESSION['login_error']; unset($_SESSION['login_error']); ?></div>
+            <?php } ?>
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit" name="login">Masuk</button>

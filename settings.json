@@ -1,0 +1,74 @@
+{
+    "security.workspace.trust.untrustedFiles": "open",
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "vscode-edge-devtools.webhintInstallNotification": true,
+    "workbench.editor.empty.hint": "hidden",
+    "grunt.autoDetect": "on",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.editorAssociations": {
+        "*.php": "default"
+    },
+    "php.validate.executablePath": "autoDetect",
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "vscode-pets.theme": "winter",
+    "vscode-pets.throwBallWithMouse": true,
+    "vscode-pets.petSize": "small",
+    "settingsSync.ignoredExtensions": [
+        "tonybaloney.vscode-pets"
+    ],
+    "workbench.settings.applyToAllProfiles": [
+        "vscode-pets.theme"
+    ],
+    "open-php-html-js-in-browser.selectedBrowser": "Chrome",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "prettier.bracketSameLine": true,
+    "prettier.enableDebugLogs": true,
+    "prettier.experimentalTernaries": true,
+    "prettier.htmlWhitespaceSensitivity": "ignore",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "chat.mcp.gallery.enabled": true,
+    "vscode-pets.disableEffects": true,
+    "gitlens.ai.model": "vscode",
+    "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+    "files.autoSave": "afterDelay",
+    "git.confirmSync": false,
+    "liveServer.settings.donotVerifyTags": true,
+    "json.schemaDownload.trustedDomains": {
+        "https://schemastore.azurewebsites.net/": true,
+        "https://raw.githubusercontent.com/microsoft/vscode/": true,
+        "https://raw.githubusercontent.com/devcontainers/spec/": true,
+        "https://www.schemastore.org/": true,
+        "https://json.schemastore.org/": true,
+        "https://json-schema.org/": true,
+        "https://developer.microsoft.com/json-schemas/": true,
+        "https://raw.githubusercontent.com": true
+    },
+    "chat.viewSessions.orientation": "stacked",
+    "php.problems.exclude": {
+        "**/*": [
+            "PHP0416"
+        ]
+    },
+    "workbench.activityBar.compact": true,
+    "githubPullRequests.pullRequestDescription": "commit",
+    "workbench.productIconTheme": "bootstrap-product-icons",
+    "workbench.colorTheme": "Andromeda Italic Bordered",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "php.debug.executablePath": ""
+}
