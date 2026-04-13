@@ -2,11 +2,15 @@
 session_start();
 include 'config.php';
 
-$error = '';
-
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
+    
+    if (empty($username) || empty($password)) {
+        $_SESSION['login_error'] = "Username dan password harus diisi!";
+        header("Location: login.php");
+        exit();
+    }
 
     $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
@@ -21,10 +25,14 @@ if (isset($_POST['login'])) {
             header("Location: index.php");
             exit();
         } else {
-            $error = "Username atau password salah!";
+            $_SESSION['login_error'] = "Username atau password salah!";
+            header("Location: login.php");
+            exit();
         }
     } else {
-        $error = "Username atau password salah!";
+        $_SESSION['login_error'] = "Username atau password salah!";
+        header("Location: login.php");
+        exit();
     }
     $stmt->close();
 }
@@ -34,5 +42,4 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     header("Location: index.php");
     exit();
 }
-$_SESSION['login_error'] = $error;
 ?>

@@ -1,10 +1,65 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: login.php");
-    exit();
+include 'config.php';
+
+// Optional login - works without admin
+$is_admin = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
+
+// Handle CRUD
+if ($_POST) {
+    if (isset($_POST['add_student'])) {
+        $name = $_POST['name'];
+        $role = $_POST['role'];
+        $address = $_POST['address'];
+        $skills_str = $_POST['skills_str'] ?? '';
+        $skills_array = $skills_str ? array_map('trim', explode(',', $skills_str)) : [];
+        $skills = json_encode(array_filter($skills_array));
+        $hobby = $_POST['hobby'];
+        $photo = $_POST['photo'] ?: 'asset foto/asset foto siswa/sementara.png';
+        
+        $stmt = $conn->prepare("INSERT INTO students (name, role, address, skills, hobby, photo) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $name, $role, $address, $skills, $hobby, $photo);
+        $success = $stmt->execute();
+        $stmt->close();
+        $response = ['success' => $success];
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit();
+    }
+    
+    if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+        $id = (int)$_GET['id'];
+        $stmt = $conn->prepare("DELETE FROM students WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $success = $stmt->execute();
+        $stmt->close();
+        $response = ['success' => $success];
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit();
+    }
+}
+
+// Fetch students safe
+$studentData = [];
+$table_check = $conn->query("SHOW TABLES LIKE 'students'");
+if ($table_check && $table_check->num_rows > 0) {
+    $stmt = $conn->prepare("SELECT * FROM students ORDER BY name");
+    if ($stmt) {
+        $stmt->execute();
+        $student_result = $stmt->get_result();
+        while ($row = $student_result->fetch_assoc()) {
+            $studentData[] = $row;
+        }
+        $stmt->close();
+    }
+}
+if (empty($studentData)) {
+    $studentData = []; // or fallback hardcoded
 }
 ?>
+
+
 <!doctype html>
 <html lang="id">
 
@@ -67,8 +122,22 @@ if (!isset($_SESSION['admin_logged_in'])) {
             <p>REKAYASA PERANGKAT LUNAK - SMK PGRI 2 PONOROGO</p>
         </div>
         <div class="pembatas1" id="stuktur">
-            <h1>Struktur Kelas</h1>
+            <h1>Struktur Kelas <?php echo $is_admin ? '(Admin Panel)' : ''; ?></h1>
         </div>
+        <?php if ($is_admin) { ?>
+        <div class="admin-section container">
+            <h3>Tambah/Edit Siswa</h3>
+            <form id="addStudentForm" class="crud-form">
+                <input type="text" name="name" placeholder="Nama Lengkap" required>
+                <input type="text" name="role" placeholder="Role/Jabatan">
+                <textarea name="address" placeholder="Catatan/Alamat"></textarea>
+                <input type="text" name="hobby" placeholder="Hobi">
+                <input type="text" name="photo" placeholder="Path Foto">
+                <div><label>Keahlian (comma separated):</label><input type="text" name="skills_str" id="skills_str" placeholder="e.g. HTML,CSS,JS"></div>
+                <button type="button" class="crud-btn" onclick="addStudent()">Tambah Siswa</button>
+            </form>
+        </div>
+        <?php } ?>
         <main class="container">
             <div class="grid-wrapper" id="student-grid"></div>
         </main>

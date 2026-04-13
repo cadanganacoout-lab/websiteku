@@ -1,0 +1,423 @@
+/* Minimal CSS for index.php - extracted/adapted from inline */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+    min-height: 100vh;
+}
+
+body {
+    background: linear-gradient(45deg, #24262b, #322447, #1f283f, #24262b);
+    line-height: 1.5;
+    font-family: "Poppins", sans-serif;
+}
+
+.background-header {
+    background-image: url("../asset foto/asset logo sekolah/birumerah.png");
+    background-size: cover;
+    background-position: center;
+    padding: 100px 20px 270px;
+}
+
+.img-header {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+header {
+    color: rgb(255, 255, 255);
+    padding: 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    transition: background 0.3s ease;
+}
+
+nav {
+    background-color: rgb(83, 80, 233);
+    border-radius: 10px;
+    padding: 0 20px;
+    height: 70px;
+    border-bottom: #ffffff 7px solid;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+}
+
+nav li {
+    height: 50px;
+}
+
+nav a {
+    padding: 0 30px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: rgb(251, 251, 251);
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #ffffff;
+    color: #333;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    display: none;
+    flex-direction: column;
+    padding-top: 80px;
+}
+
+.menu-button {
+    display: none;
+}
+
+@media (max-width: 1000px) {
+    .hideOnMobile {
+        display: none;
+    }
+    .menu-button {
+        display: block;
+    }
+}
+
+h1, h2 {
+    text-align: center;
+    color: #fdfdfd;
+    text-shadow: #000 2px 2px 4px;
+}
+
+.pembatas1, .pembatas2 {
+    background: #4e63cd;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 30px 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin: 40px 0;
+}
+
+.student-card {
+    background: linear-gradient(45deg, #908a94, #aa60ff, #725ae8, #6499e8);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    border-top: 5px solid #2877ff;
+}
+
+.student-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffffff;
+    margin-bottom: 15px;
+}
+
+.student-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.student-role {
+    background: #ffffff;
+    color: #0778fa;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.click-hint {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: #f0f0f0;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #9babc6, #866c86);
+    max-width: 500px;
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    transform: scale(0.7);
+    animation: modalIn 0.3s ease forwards;
+}
+
+@keyframes modalIn {
+    to { transform: scale(1); }
+}
+
+.modal-header {
+    background: linear-gradient(45deg, #e8fcff, #b38bc1);
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+}
+
+.modal-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid white;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.info-group {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.info-label {
+    font-weight: bold;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    color: #333;
+    font-size: 1rem;
+}
+
+.skill-badge {
+    display: inline-block;
+    background: #2a5298;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin: 0 5px 5px 0;
+}
+
+.carousel {
+    margin: 100px auto;
+    width: 90%;
+    max-width: 1200px;
+    overflow-x: auto;
+    border: 5px solid #272728;
+    border-radius: 10px;
+}
+
+.group {
+    display: flex;
+    gap: 1rem;
+    animation: spin 30s infinite linear;
+    padding: 1rem 0;
+}
+
+.cardd {
+    flex: 0 0 300px;
+    height: 200px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cardd img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes spin {
+    to { transform: translateX(-100%); }
+}
+
+.footer {
+    background: #24262b;
+    padding: 50px 20px;
+    color: white;
+    margin-top: 50px;
+}
+
+.footer .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-col h4 {
+    margin-bottom: 20px;
+}
+
+.footer-col ul li a {
+    color: #bbb;
+    text-decoration: none;
+}
+
+.footer-col ul li a:hover {
+    color: white;
+}
+
+.social-links a {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.2);
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.login-box, .register-box {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.login-box input, .register-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.login-box button, .register-box button {
+    width: 100%;
+    padding: 12px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.register-box button {
+    background: #28a745;
+}
+
+.admin-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.crud-form input, .crud-form textarea, .crud-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.crud-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.delete-btn {
+    background: #dc3545;
+}
+
+@media (max-width: 768px) {
+    .grid-wrapper {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    .carousel .group {
+        gap: 0.5rem;
+    }
+    .cardd {
+        flex: 0 0 250px;
+        height: 150px;
+    }
+}

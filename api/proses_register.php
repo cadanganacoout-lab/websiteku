@@ -2,9 +2,21 @@
 include 'config.php';
 
 if (isset($_POST['register'])) {
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+    
+    // Validasi input kosong
+    if (empty($username) || empty($password) || empty($confirm_password)) {
+        echo "<script>alert('Semua field harus diisi!'); window.location='register.php';</script>";
+        exit();
+    }
+    
+    // Validasi panjang password minimal 6 karakter
+    if (strlen($password) < 6) {
+        echo "<script>alert('Password minimal 6 karakter!'); window.location='register.php';</script>";
+        exit();
+    }
 
     // 1. Cek apakah password dan konfirmasi password sama
     if ($password !== $confirm_password) {
@@ -17,6 +29,8 @@ if (isset($_POST['register'])) {
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
+    $stmt->close();
+    
     if ($result->num_rows > 0) {
         echo "<script>alert('Username sudah digunakan, cari yang lain!'); window.location='register.php';</script>";
     } else {
