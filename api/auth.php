@@ -18,7 +18,7 @@ if (isset($_POST['login'])) {
             $_SESSION['admin_logged_in'] = true;
             $_SESSION['admin_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
-            header("Location: dashboard.php");
+            header("Location: index.php");
             exit();
         } else {
             $error = "Username atau password salah!";
@@ -31,7 +31,7 @@ if (isset($_POST['login'])) {
 
 // Redirect if already logged in
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-    header("Location: dashboard.php");
+    header("Location: index.php");
     exit();
 }
 $_SESSION['login_error'] = $error;
