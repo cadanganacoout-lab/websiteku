@@ -25,7 +25,11 @@ if (isset($_POST['register'])) {
     }
 
     // 2. Cek apakah username sudah ada di database
-    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+$stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+    if (!$stmt) {
+        echo "<script>alert('DB error: ' + mysqli_error($conn)); window.location='register.php';</script>";
+        exit();
+    }
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -39,6 +43,10 @@ if (isset($_POST['register'])) {
 
         // 4. Masukkan ke database
         $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+        if (!$stmt) {
+            echo "<script>alert('DB error: " . mysqli_error($conn) . "'); window.location='register.php';</script>";
+            exit();
+        }
         $stmt->bind_param("ss", $username, $hashed_password);
         $insert = $stmt->execute();
         $stmt->close();
@@ -46,8 +54,9 @@ if (isset($_POST['register'])) {
         if ($insert) {
             echo "<script>alert('Registrasi Berhasil! Silahkan Login.'); window.location='login.php';</script>";
         } else {
-            echo "<script>alert('Gagal mendaftar, coba lagi.'); window.location='register.php';</script>";
+            echo "<script>alert('Gagal mendaftar: " . mysqli_error($conn) . "'); window.location='register.php';</script>";
         }
     }
 }
 ?>
+
