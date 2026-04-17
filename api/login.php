@@ -8,7 +8,7 @@ include 'config.php';
 <head>
     <meta charset="UTF-8">
     <title>Login - X RPL 1</title>
-    <link rel="stylesheet" href="style.css"> <!-- Gunakan CSS yang sudah ada -->
+    <link rel="stylesheet" href="style.css">
     <style>
         .login-box { width: 300px; margin: 100px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
         .login-box input { width: 100%; margin-bottom: 10px; padding: 8px; }
@@ -18,7 +18,7 @@ include 'config.php';
 <body>
     <div class="login-box">
         <h2>Login Admin</h2>
-<form action="auth.php" method="POST">
+        <form action="auth.php" method="POST">
             <?php if (isset($_SESSION['login_error']) && !empty($_SESSION['login_error'])) { ?>
                 <div style="color: red; margin-bottom: 10px;"><?php echo $_SESSION['login_error']; unset($_SESSION['login_error']); ?></div>
             <?php } ?>

@@ -13,7 +13,7 @@ if ($_POST && isset($_POST['add_student']) && $is_admin) {
     $data = [
         'name' => $_POST['name'],
         'role' => $_POST['role'] ?? 'Siswa',
-        'photo' => $_POST['photo'] ?? 'asset foto/asset foto siswa/sementara.png',
+        'photo' => $_POST['photo'] ?? '../asset/asset_foto/asset_foto_siswa/sementara.png',
         'address' => $_POST['address'] ?? '',
         'skills' => !empty($_POST['skills']) ? explode(',', $_POST['skills']) : [],
         'hobby' => $_POST['hobby'] ?? '',
@@ -174,7 +174,7 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
             align-items: center;
             text-align: center;
             padding: 0 2rem;
-            background: linear-gradient(135deg, rgba(107, 70, 193, .1), rgba(76, 29, 149, .1)), url('asset foto/asset logo sekolah/birumerah.png');
+            background: linear-gradient(135deg, rgba(107, 70, 193, .1), rgba(76, 29, 149, .1)), url('../asset/asset_foto/asset_logo_sekolah/birumerah.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed
@@ -592,7 +592,7 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
         <div class="students-grid" id="studentsGrid">
             <?php foreach ($students as $s): ?>
                 <div class="student-card" onclick="openModal(<?= json_encode($s) ?>)">
-                    <img class="avatar" src="<?= $s['photo'] ?? 'asset foto/asset foto siswa/sementara.png' ?>" alt="<?= $s['name'] ?>">
+                    <img class="avatar" src="<?= $s['photo'] ?? '../asset/asset_foto/asset_foto_siswa/sementara.png' ?>" alt="<?= $s['name'] ?>">
                     <h3 class="student-name"><?= $s['name'] ?></h3>
                     <div class="student-role"><?= $s['role'] ?? 'Siswa' ?></div>
                     <div class="details">
@@ -616,10 +616,10 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
                 <?php
                 $photos = ['agit.png', 'bintalsik.png', 'bintalsik2.png', 'bukber.png', 'dirumahpakandies.png', 'fotobersama.png', 'gaje.png', 'gajev2.png', 'jaman majapahit.png', 'last mpls.png', 'mujahadah.png', 'opo i.png', 'pondokcw.png', 'pondokcwk.png', 'sejarahv2.png', 'sejorh.png', 'terawih.png', 'withpakendi.png'];
                 foreach ($photos as $p) {
-                    echo "<div class='album-card'><img src='asset foto/asset foto album/$p' loading='lazy'></div>";
+                    echo "<div class='album-card'><img src='../asset/asset_foto/asset_foto_album/$p' loading='lazy'></div>";
                 }
                 foreach ($photos as $p) {
-                    echo "<div class='album-card'><img src='asset foto/asset foto album/$p' loading='lazy'></div>";
+                    echo "<div class='album-card'><img src='../asset/asset_foto/asset_foto_album/$p' loading='lazy'></div>";
                 } // Duplicate for infinite
                 ?>
             </div>
@@ -760,7 +760,7 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
         function openModal(student) {
             currentStudent = student
             editMode = false;
-            document.getElementById('modalPhoto').src = student.photo || 'asset foto/asset foto siswa/sementara.png'
+            document.getElementById('modalPhoto').src = student.photo || '../asset/asset_foto/asset_foto_siswa/sementara.png'
             document.getElementById('modalName').textContent = student.name
             document.getElementById('modalRole').textContent = student.role || 'Siswa'
             document.getElementById('modalDetails').innerHTML = `

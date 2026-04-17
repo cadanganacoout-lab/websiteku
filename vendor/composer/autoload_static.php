@@ -7,13 +7,22 @@ namespace Composer\Autoload;
 class ComposerStaticInit6efcbf0c15767efe25e04a07a56e8e33
 {
     public static $files = array (
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '606a39d89246991a373564698c2d8383' => __DIR__ . '/..' . '/symfony/polyfill-php85/bootstrap.php',
+        '3a37ebac017bc098e9a86b35401e7a68' => __DIR__ . '/..' . '/mongodb/mongodb/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' =>
         array (
-            'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Php85\\' => 23,
+        ),
+        'P' =>
+        array (
+            'Psr\\Log\\' => 8,
+        ),
+        'M' =>
+        array (
+            'MongoDB\\' => 8,
         ),
         'A' =>
         array (
@@ -22,9 +31,17 @@ class ComposerStaticInit6efcbf0c15767efe25e04a07a56e8e33
     );
 
     public static $prefixDirsPsr4 = array (
-        'Symfony\\Polyfill\\Php80\\' =>
+        'Symfony\\Polyfill\\Php85\\' =>
         array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php85',
+        ),
+        'Psr\\Log\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
+        ),
+        'MongoDB\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/mongodb/mongodb/src',
         ),
         'App\\' =>
         array (
@@ -33,12 +50,11 @@ class ComposerStaticInit6efcbf0c15767efe25e04a07a56e8e33
     );
 
     public static $classMap = array (
-        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
-        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
-        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
-        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
+        'DelayedTargetValidation' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/DelayedTargetValidation.php',
+        'Filter\\FilterException' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/Filter/FilterException.php',
+        'Filter\\FilterFailedException' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/Filter/FilterFailedException.php',
+        'NoDiscard' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/NoDiscard.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

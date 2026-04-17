@@ -1,7 +1,5 @@
 {
-    "name": "kelass/api",
-    "description": "API for X RPL 1 class management",
-    "type": "project",
+    "name": "xanzz/kelass",
     "require": {
         "mongodb/mongodb": "^2.2"
     },
@@ -9,6 +7,5 @@
         "psr-4": {
             "App\\": "src/"
         }
-    },
-    "minimum-stability": "stable"
+    }
 }

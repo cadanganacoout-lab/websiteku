@@ -1,28 +1,52 @@
 <?php return array(
     'root' => array(
-        'name' => 'user/proyek-saya',
+        'name' => 'xanzz/kelass',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '2ab928536d03f52eda32d3b892eb4656ceed6843',
+        'reference' => 'db320b07fbe59a644abe023d4d96aac4ad7b3648',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        'symfony/polyfill-php80' => array(
-            'pretty_version' => 'v1.36.0',
-            'version' => '1.36.0.0',
-            'reference' => 'dfb55726c3a76ea3b6459fcfda1ec2d80a682411',
+        'mongodb/builder' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'mongodb/mongodb' => array(
+            'pretty_version' => '2.2.0',
+            'version' => '2.2.0.0',
+            'reference' => 'bbb13f969e37e047fd822527543df55fdc1c9298',
             'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/polyfill-php80',
+            'install_path' => __DIR__ . '/../mongodb/mongodb',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'user/proyek-saya' => array(
+        'psr/log' => array(
+            'pretty_version' => '3.0.2',
+            'version' => '3.0.2.0',
+            'reference' => 'f16e1d5863e37f8d8c2a01719f5b34baa2b714d3',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/log',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-php85' => array(
+            'pretty_version' => 'v1.35.0',
+            'version' => '1.35.0.0',
+            'reference' => '2c408a6bb0313e6001a83628dc5506100474254e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-php85',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'xanzz/kelass' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '2ab928536d03f52eda32d3b892eb4656ceed6843',
+            'reference' => 'db320b07fbe59a644abe023d4d96aac4ad7b3648',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
