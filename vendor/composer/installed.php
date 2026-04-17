@@ -3,7 +3,7 @@
         'name' => 'xanzz/kelass',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'db320b07fbe59a644abe023d4d96aac4ad7b3648',
+        'reference' => 'd98ff9b3beb7c542752855e4e4dbc388aa8ee552',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -35,8 +35,8 @@
             'dev_requirement' => false,
         ),
         'symfony/polyfill-php85' => array(
-            'pretty_version' => 'v1.35.0',
-            'version' => '1.35.0.0',
+            'pretty_version' => 'v1.36.0',
+            'version' => '1.36.0.0',
             'reference' => '2c408a6bb0313e6001a83628dc5506100474254e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-php85',
@@ -46,7 +46,7 @@
         'xanzz/kelass' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'db320b07fbe59a644abe023d4d96aac4ad7b3648',
+            'reference' => 'd98ff9b3beb7c542752855e4e4dbc388aa8ee552',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
