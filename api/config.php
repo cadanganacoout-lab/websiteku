@@ -1,17 +1,13 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "tbs_xrpl1";
 
-$conn = mysqli_connect($host, $user, $pass, $db);
+require 'vendor/autoload.php';
 
-if (!$conn) {
-    die("Koneksi gagal: " . mysqli_connect_error());
-}
+use MongoDB\Driver\ServerApi;
 
-$conn->set_charset("utf8mb4");
+$uri = 'mongodb+srv://users:182009@xanzzviell.jrgddli.mongodb.net/?appName=XanzzViell';
 
+// Set the version of the Stable API on the client
+// Ganti baris 11 sampai 14 dengan ini:
+$client = new MongoDB\Client($uri);
 
-?>
-
+$db = $client->selectDatabase('data_user');

@@ -1,0 +1,14 @@
+{
+    "name": "kelass/api",
+    "description": "API for X RPL 1 class management",
+    "type": "project",
+    "require": {
+        "mongodb/mongodb": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

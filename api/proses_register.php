@@ -18,44 +18,38 @@ if (isset($_POST['register'])) {
         exit();
     }
 
-    // 1. Cek apakah password dan konfirmasi password sama
+    // Cek apakah password dan konfirmasi password sama
     if ($password !== $confirm_password) {
         echo "<script>alert('Konfirmasi password tidak sesuai!'); window.location='register.php';</script>";
         exit();
     }
 
-    // 2. Cek apakah username sudah ada di database
-$stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
-    if (!$stmt) {
-        echo "<script>alert('DB error: ' + mysqli_error($conn)); window.location='register.php';</script>";
-        exit();
-    }
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
-    
-    if ($result->num_rows > 0) {
-        echo "<script>alert('Username sudah digunakan, cari yang lain!'); window.location='register.php';</script>";
-    } else {
-        // 3. Enkripsi password sebelum disimpan (Keamanan Penting!)
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // 4. Masukkan ke database
-        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-        if (!$stmt) {
-            echo "<script>alert('DB error: " . mysqli_error($conn) . "'); window.location='register.php';</script>";
+    try {
+        // Cek apakah username sudah ada
+        $existing = $db->users->findOne(['username' => $username]);
+        if ($existing) {
+            echo "<script>alert('Username sudah digunakan, cari yang lain!'); window.location='register.php';</script>";
             exit();
         }
-        $stmt->bind_param("ss", $username, $hashed_password);
-        $insert = $stmt->execute();
-        $stmt->close();
 
-        if ($insert) {
+        // Enkripsi password
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        // Insert user
+        $result = $db->users->insertOne([
+            'username' => $username,
+            'password' => $hashed_password,
+'role' => 'user',
+            'created_at' => new MongoDB\BSON\UTCDateTime()
+        ]);
+
+        if ($result->getInsertedCount() > 0) {
             echo "<script>alert('Registrasi Berhasil! Silahkan Login.'); window.location='login.php';</script>";
         } else {
-            echo "<script>alert('Gagal mendaftar: " . mysqli_error($conn) . "'); window.location='register.php';</script>";
+            echo "<script>alert('Gagal mendaftar!'); window.location='register.php';</script>";
         }
+    } catch (Exception $e) {
+        echo "<script>alert('Error: " . addslashes($e->getMessage()) . "'); window.location='register.php';</script>";
     }
 }
 ?>

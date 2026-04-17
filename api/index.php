@@ -2,1292 +2,808 @@
 session_start();
 include 'config.php';
 
-// Optional login - works without admin
+use MongoDB\BSON\ObjectId;
+use MongoDB\BSON\UTCDateTime;
+
+$is_logged_in = isset($_SESSION['admin_logged_in']) || isset($_SESSION['user_logged_in']);
 $is_admin = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
 
 // Handle CRUD
-if ($_POST) {
-    if (isset($_POST['add_student'])) {
-        $name = $_POST['name'];
-        $role = $_POST['role'];
-        $address = $_POST['address'];
-        $skills_str = $_POST['skills_str'] ?? '';
-        $skills_array = $skills_str ? array_map('trim', explode(',', $skills_str)) : [];
-        $skills = json_encode(array_filter($skills_array));
-        $hobby = $_POST['hobby'];
-        $photo = $_POST['photo'] ?: 'asset foto/asset foto siswa/sementara.png';
+if ($_POST && isset($_POST['add_student']) && $is_admin) {
+    $data = [
+        'name' => $_POST['name'],
+        'role' => $_POST['role'] ?? 'Siswa',
+        'photo' => $_POST['photo'] ?? 'asset foto/asset foto siswa/sementara.png',
+        'address' => $_POST['address'] ?? '',
+        'skills' => !empty($_POST['skills']) ? explode(',', $_POST['skills']) : [],
+        'hobby' => $_POST['hobby'] ?? '',
+        'created_at' => new UTCDateTime()
+    ];
+    $result = $db->students->insertOne($data);
+    exit(json_encode(['success' => true]));
+}
+
+if (isset($_GET['delete']) && $is_admin) {
+    $db->students->deleteOne(['_id' => new ObjectId($_GET['delete'])]);
+    exit(json_encode(['success' => true]));
+}
+
+if ($_POST && isset($_POST['update_student']) && $is_admin) {
+    if (!$is_admin) {
+        exit(json_encode(['success' => false, 'error' => 'Admin access required']));
+    }
+    try {
+        $id = new ObjectId($_POST['id']);
+        $update = ['$set' => []];
+        if (!empty($_POST['name'])) $update['$set']['name'] = trim($_POST['name']);
+        if (!empty($_POST['role'])) $update['$set']['role'] = trim($_POST['role']);
+        if (!empty($_POST['photo'])) $update['$set']['photo'] = trim($_POST['photo']);
+        if (!empty($_POST['address'])) $update['$set']['address'] = trim($_POST['address']);
+        if (!empty($_POST['skills'])) $update['$set']['skills'] = array_map('trim', explode(',', $_POST['skills']));
+        if (!empty($_POST['hobby'])) $update['$set']['hobby'] = trim($_POST['hobby']);
         
-        $stmt = $conn->prepare("INSERT INTO students (name, role, address, skills, hobby, photo) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $name, $role, $address, $skills, $hobby, $photo);
-        $success = $stmt->execute();
-        $stmt->close();
-        $response = ['success' => $success];
-        header('Content-Type: application/json');
-        echo json_encode($response);
-        exit();
-    }
-    
-    if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
-        $id = (int)$_GET['id'];
-        $stmt = $conn->prepare("DELETE FROM students WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $success = $stmt->execute();
-        $stmt->close();
-        $response = ['success' => $success];
-        header('Content-Type: application/json');
-        echo json_encode($response);
-        exit();
-    }
-}
-
-// Fetch students safe
-$studentData = [];
-$table_check = $conn->query("SHOW TABLES LIKE 'students'");
-if ($table_check && $table_check->num_rows > 0) {
-    $stmt = $conn->prepare("SELECT * FROM students ORDER BY name");
-    if ($stmt) {
-        $stmt->execute();
-        $student_result = $stmt->get_result();
-        while ($row = $student_result->fetch_assoc()) {
-            $studentData[] = $row;
+        if (empty($update['$set'])) {
+            exit(json_encode(['success' => false, 'error' => 'No fields to update']));
         }
-        $stmt->close();
+        
+        $result = $db->students->updateOne(['_id' => $id], $update);
+        if ($result->getMatchedCount() > 0) {
+            exit(json_encode(['success' => true]));
+        } else {
+            exit(json_encode(['success' => false, 'error' => 'Student not found']));
+        }
+    } catch (Exception $e) {
+        exit(json_encode(['success' => false, 'error' => $e->getMessage()]));
     }
 }
-if (empty($studentData)) {
-    $studentData = []; // or fallback hardcoded
-}
+
+
+$students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, 'name' => 1]]));
 ?>
-
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:image" content="https://kelasxrpl1.vercel.app/og-image.jpg">
-    <link rel="stylesheet" href="style.css" />
-    <script src="main.js" defer></script>
-    <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Data Kelas 10 RPL 1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>X RPL 1 | SMK PGRI 2 Ponorogo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif
+        }
+
+        :root {
+            --primary: #6b46c1;
+            --secondary: #4c1d95;
+            --accent: #ed64a6;
+            --bg: #0f0f23;
+            --card-bg: linear-gradient(135deg, #1e1b4b, #2d1b69)
+        }
+
+        body {
+            background: var(--bg);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(107, 70, 193, .3)
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, white, var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all .3s;
+            opacity: .9
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            transform: translateY(-2px)
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: .3rem
+        }
+
+        .nav-links.open {
+            display: flex !important;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            flex-direction: column;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1rem;
+            gap: 1rem;
+            z-index: 99;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            transition: .3s
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            background: linear-gradient(135deg, rgba(107, 70, 193, .1), rgba(76, 29, 149, .1)), url('asset foto/asset logo sekolah/birumerah.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, var(--accent), #fff);
+            background-size: 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 4s ease infinite
+        }
+
+        .hero p {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            opacity: .9
+        }
+
+        .cta {
+            background: var(--accent);
+            color: #000;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .3s;
+            box-shadow: 0 10px 30px rgba(237, 100, 166, .4)
+        }
+
+        .cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(237, 100, 166, .6)
+        }
+
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto
+        }
+
+        .section h2 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            text-align: center;
+            margin-bottom: 4rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, white, var(--accent));
+            background-size: 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 3s ease infinite
+        }
+
+        @keyframes gradientMove {
+
+            0%,
+            100% {
+                background-position: 0 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem
+        }
+
+        .student-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all .4s;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .3);
+            border: 1px solid rgba(107, 70, 193, .2);
+            overflow: hidden;
+            position: relative
+        }
+
+        .student-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--primary))
+        }
+
+        .student-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(107, 70, 193, .4)
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .4)
+        }
+
+        .student-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: .5rem
+        }
+
+        .student-role {
+            background: var(--primary);
+            color: white;
+            padding: .5rem 1.5rem;
+            border-radius: 25px;
+            font-size: .95rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem
+        }
+
+        .details {
+            margin-top: 1.5rem;
+            font-size: .95rem;
+            line-height: 1.6;
+            opacity: .9
+        }
+
+        .details i {
+            margin-right: .5rem;
+            color: var(--accent)
+        }
+
+        .album {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, .4);
+            margin: 3rem 0
+        }
+
+        .album-track {
+            display: flex;
+            animation: scroll 40s linear infinite
+        }
+
+        .album-card {
+            flex: 0 0 400px;
+            height: 300px;
+            margin-right: 1.5rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .3)
+        }
+
+        .album-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
+
+        .admin-panel {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(107, 70, 193, .3)
+        }
+
+        .admin-panel h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 1rem;
+            max-width: 500px
+        }
+
+        .admin-form input,
+        .admin-form textarea,
+        .admin-form select {
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .05);
+            color: white;
+            font-size: 1rem
+        }
+
+        .admin-form input::placeholder,
+        .admin-form textarea::placeholder {
+            color: rgba(255, 255, 255, .5)
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .3s
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px)
+        }
+
+        .btn-danger {
+            background: #e53e3e
+        }
+
+        .btn-danger:hover {
+            background: #c53030
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all .3s
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a3e, #2d1b69);
+            border-radius: 25px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, .6);
+            transform: scale(.8);
+            transition: all .3s
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1)
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem
+        }
+
+        .modal-header img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 6px solid white;
+            margin-bottom: 1rem
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: .5rem
+        }
+
+        .modal-role {
+            background: var(--accent);
+            color: #000;
+            padding: .75rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            display: inline-block
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin: 1.5rem 0
+        }
+
+        .skill-tag {
+            background: var(--primary);
+            padding: .5rem 1rem;
+            border-radius: 20px;
+            font-size: .9rem
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1e1b4b, #2d1b69);
+            padding: 4rem 2rem 2rem;
+            text-align: center
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, .8);
+            text-decoration: none;
+            transition: .3s
+        }
+
+        .footer-link:hover {
+            color: white
+        }
+
+        @media (max-width:768px) {
+            .hamburger {
+                display: flex
+            }
+
+            .nav-links {
+                display: none
+            }
+
+            .students-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem
+            }
+
+            .album-card {
+                flex: 0 0 300px;
+                height: 200px;
+                margin-right: 1rem
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <section id="Home" class="scrollToSection">
-        <header id="header">
-            <nav>
-                <ul class="sidebar">
-                    <li onclick=hideSidebar()><a href="#auto"><svg xmlns="http://www.w3.org/2000/svg" height="26"
-                                viewBox="0 96 960 960" width="26">
-                                <path
-                                    d="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" />
-                            </svg></a></li>
-                    <li><a href="#Home">Home</a></li>
-                    <li><a href="#stuktur">Struktur</a></li>
-                    <li><a href="#album">Album</a></li>
-                    <li><a href="#contact">Contact</a></li>
-    <?php if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in']) { ?>
-                    <li><a href="logout.php">Logout (<?php echo $_SESSION['username']; ?>)</a></li>
-                <?php } else { ?>
+    <header>
+        <nav>
+            <div class="logo">X RPL 1</div>
+            <ul class="nav-links">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#struktur">Struktur</a></li>
+                <li><a href="#album">Galeri</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+                <?php if (!$is_logged_in): ?>
                     <li><a href="login.php">Login</a></li>
-                <?php } ?>
-                </ul>
-                <ul>
-                    <li><a href="#">NAVBAR</a></li>
-                    <li class="hideOnMobile"><a href="#Home">Home</a></li>
-    <li class="hideOnMobile"><a href="#stuktur">Struktur</a></li>
-                    <li class="hideOnMobile"><a href="#album">Album</a></li>
-                    <li class="hideOnMobile"><a href="#contact">Contact</a></li>
-                    <li class="hideOnMobile"><a href="login.php">Login</a></li>
-                    <li class="menu-button" onclick="showSidebar()">
-                        <a href="#auto">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 96 960 960" width="26">
-                                <path d="M120 816v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z" />
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-        <div class="background-header">
-            <div class="img-header">
-                <img src="asset foto/asset logo sekolah/logo smk.png" alt="Logo SMK PGRI 2 Ponorogo"
-                    class="img-header" />
+                <?php else: ?>
+                    <li><a href="logout.php">Logout</a></li>
+                <?php endif; ?>
+            </ul>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
             </div>
-            <h2>X RPL 1</h2>
-            <p>REKAYASA PERANGKAT LUNAK - SMK PGRI 2 PONOROGO</p>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>Kelas X RPL 1</h1>
+        <p>Rekayasa Perangkat Lunak - SMK PGRI 2 Ponorogo. Temukan struktur lengkap kelas, wali kelas, dan kenangan foto bersama kami!</p>
+        <button class="cta" onclick="scrollTo('#struktur')">Lihat Struktur Kelas</button>
+    </section>
+
+    <section id="struktur" class="section">
+        <h2>Struktur Kelas</h2>
+        <?php if ($is_admin): ?>
+            <div class="admin-panel">
+                <h3><i class="fas fa-plus"></i> Kelola Siswa</h3>
+                <form class="admin-form" id="studentForm">
+                    <input name="name" placeholder="Nama lengkap" required>
+                    <input name="role" placeholder="Jabatan (Wali Kelas/Siswa/Ketua dll)">
+                    <input name="photo" placeholder="Path foto">
+                    <textarea name="address" placeholder="Catatan khusus/alamat" rows="2"></textarea>
+                    <input name="skills" placeholder="Keahlian (pisahkan koma)">
+                    <input name="hobby" placeholder="Hobby">
+                    <button type="submit" class="btn">Tambah Siswa <i class="fas fa-save"></i></button>
+                </form>
+            </div>
+        <?php endif; ?>
+        <div class="students-grid" id="studentsGrid">
+            <?php foreach ($students as $s): ?>
+                <div class="student-card" onclick="openModal(<?= json_encode($s) ?>)">
+                    <img class="avatar" src="<?= $s['photo'] ?? 'asset foto/asset foto siswa/sementara.png' ?>" alt="<?= $s['name'] ?>">
+                    <h3 class="student-name"><?= $s['name'] ?></h3>
+                    <div class="student-role"><?= $s['role'] ?? 'Siswa' ?></div>
+                    <div class="details">
+                        <i class="fas fa-quote-left"></i> <?= $s['address'] ?? 'Siswa hebat!' ?>
+                        <?php if (!empty($s['hobby'])): ?><br><i class="fas fa-gamepad"></i> <?= $s['hobby'] ?><?php endif; ?>
+                    </div>
+                    <?php if ($is_admin): ?>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" style="background: #10b981; padding: .5rem 1rem; font-size: .9rem;" onclick="editStudent(<?= json_encode($s) ?>); event.stopPropagation();">✏️ Edit</button>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
         </div>
-        <div class="pembatas1" id="stuktur">
-            <h1>Struktur Kelas <?php echo $is_admin ? '(Admin Panel)' : ''; ?></h1>
+    </section>
+
+    <section id="album" class="section">
+        <h2>Galeri Foto Kelas</h2>
+        <div class="album">
+            <div class="album-track" id="albumTrack">
+                <?php
+                $photos = ['agit.png', 'bintalsik.png', 'bintalsik2.png', 'bukber.png', 'dirumahpakandies.png', 'fotobersama.png', 'gaje.png', 'gajev2.png', 'jaman majapahit.png', 'last mpls.png', 'mujahadah.png', 'opo i.png', 'pondokcw.png', 'pondokcwk.png', 'sejarahv2.png', 'sejorh.png', 'terawih.png', 'withpakendi.png'];
+                foreach ($photos as $p) {
+                    echo "<div class='album-card'><img src='asset foto/asset foto album/$p' loading='lazy'></div>";
+                }
+                foreach ($photos as $p) {
+                    echo "<div class='album-card'><img src='asset foto/asset foto album/$p' loading='lazy'></div>";
+                } // Duplicate for infinite
+                ?>
+            </div>
         </div>
-        <?php if ($is_admin) { ?>
-        <div class="admin-section container">
-            <h3>Tambah/Edit Siswa</h3>
-            <form id="addStudentForm" class="crud-form">
-                <input type="text" name="name" placeholder="Nama Lengkap" required>
-                <input type="text" name="role" placeholder="Role/Jabatan">
-                <textarea name="address" placeholder="Catatan/Alamat"></textarea>
-                <input type="text" name="hobby" placeholder="Hobi">
-                <input type="text" name="photo" placeholder="Path Foto">
-                <div><label>Keahlian (comma separated):</label><input type="text" name="skills_str" id="skills_str" placeholder="e.g. HTML,CSS,JS"></div>
-                <button type="button" class="crud-btn" onclick="addStudent()">Tambah Siswa</button>
+    </section>
+
+    <footer id="kontak">
+        <div class="footer-content">
+            <div>
+                <h4>SMK PGRI 2 Ponorogo</h4><a href="https://smkpgri2ponorogo.sch.id/" class="footer-link">Website Resmi</a>
+            </div>
+            <div>
+                <h4>Sosial Media</h4><a href="https://instagram.com/official.smkpgri2ponorogo" class="footer-link">Instagram</a>
+            </div>
+        </div>
+        <p>&copy; 2026 Kelas X RPL 1.</p>
+    </footer>
+
+    <div id="modal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <img id="modalPhoto" class="avatar" alt="">
+                <h2 id="modalName"></h2>
+                <div id="modalRole" class="student-role"></div>
+            </div>
+            <div id="modalDetails" class="details"></div>
+            <form id="editForm" style="display: none;">
+                <input type="hidden" name="id" id="editId">
+                <input type="text" id="editName" name="name" placeholder="Nama lengkap">
+                <input type="text" id="editRole" name="role" placeholder="Role/Jabatan">
+                <input type="text" id="editPhoto" name="photo" placeholder="Path foto">
+                <textarea id="editAddress" name="address" rows="2" placeholder="Address/Catatan"></textarea>
+                <input type="text" id="editSkills" name="skills" placeholder="Skills (koma separated)">
+                <input type="text" id="editHobby" name="hobby" placeholder="Hobby">
+                <button type="submit" class="btn" style="background: #f59e0b;">💾 Update Siswa</button>
             </form>
+            <?php if ($is_admin): ?>
+            <button class="btn" onclick="toggleEditMode(false)" id="editToggleBtn" style="background: #10b981;">✏️ Edit Mode</button>
+            <?php endif; ?>
         </div>
-        <?php } ?>
-        <main class="container">
-            <div class="grid-wrapper" id="student-grid"></div>
-        </main>
-        <div class="modal-overlay" id="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button class="close-btn" onclick="closeModal()">&times;</button>
-                    <img src="" alt="Foto Siswa" id="modal-img" class="modal-img" />
-                    <h2 id="modal-name">Nama Siswa</h2>
-                    <span id="modal-role" style="
-              background: rgba(255, 255, 255, 0.2);
-              padding: 2px 10px;
-              border-radius: 10px;
-              font-size: 0.9rem;
-            ">
-                        Siswa
-                    </span>
-                </div>
-                <div class="modal-body">
-                    <div class="info-group">
-                        <span class="info-label">📖 Catatan</span>
-                        <span class="info-value" id="modal-address">Aku suka Coding</span>
-                    </div>
-                    <div class="info-group">
-                        <span class="info-label">💻 Keahlian</span>
-                        <div class="info-value" id="modal-skills">HTML, CSS</div>
-                    </div>
-                    <div class="info-group">
-                        <span class="info-label">🎮 Hobi</span>
-                        <span class="info-value" id="modal-hobby">Bermain Game</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            const myWidget = cloudinary.createUploadWidget({
-                cloudName: 'NAMA_CLOUD_ANDA',
-                uploadPreset: 'PRESET_UNSIGNED_ANDA',
-                resourceType: 'video' // Wajib untuk file mp4
-            }, (error, result) => {
-                if (!error && result && result.event === "success") {
-                    console.log('Video berhasil diunggah: ', result.info.secure_url);
-                }
-            });
-
-            document.getElementById("upload_widget").addEventListener("click", function() {
-                myWidget.open();
-            }, false);
-        </script>
-        <div class="pembatas2" id="album">
-            <h1>Album Kelas X RPL !</h1>
-        </div>
-        <div class="carousel">
-            <div class="group">
-                <div class="cardd"><img src="asset foto/asset foto album/dirumahpakandies.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/agit.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/bintalsik.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/bintalsik2.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/mujahadah.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/withpakendi.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/fotobersama.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/jaman majapahit.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/last mpls.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/opo i.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/pondokcwk.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/pondokcw.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/terawih.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/bukber.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/gajev2.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/gaje.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/sejorh.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/sejarahv2.png" alt=""></div>
-            </div>
-            <div aria-hidden class="group">
-                <div class="cardd"><img src="asset foto/asset foto album/dirumahpakandies.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/agit.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/bintalsik.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/bintalsik2.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/mujahadah.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/withpakendi.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/fotobersama.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/jaman majapahit.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/last mpls.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/opo i.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/pondokcwk.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/pondokcw.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/terawih.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/bukber.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/gajev2.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/gaje.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/sejorh.png" alt=""></div>
-                <div class="cardd"><img src="asset foto/asset foto album/sejarahv2.png" alt=""></div>
-            </div>
-        </div>
-        <footer class="footer" id="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="footer-col">
-                        <h4>company</h4>
-                        <ul>
-                            <li><a href="#">about us</a></li>
-                            <li><a href="https://smkpgri2ponorogo.sch.id/">part of</a></li>
-                            <li><a href="#">privacy policy</a></li>
-                            <li><a href="#">affiliate program</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h4>get help</h4>
-                        <ul>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Hub</a></li>
-                            <li><a href="https://smkpgri2ponorogo.sch.id/contact/">contact us</a></li>
-                            <li><a href="smkpgri2ponorogo@yahoo.com">email support</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h4>follow us</h4>
-                        <div class="social-links">
-                            <a href="https://www.facebook.com/SMK-PGRI-2-Ponorogo-231334446887982/"><i
-                                    class="fab fa-facebook-f"></i></a>
-                            <a href="https://twitter.com/bkksmkpgri2po"><i class="fab fa-twitter"></i></a>
-                            <a href="https://www.instagram.com/official.smkpgri2ponorogo/"><i
-                                    class="fab fa-instagram"></i></a>
-                            <a href="https://www.youtube.com/@officialsmkspgri2ponorogo"><i
-                                    class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <style>
-            @import "tailwind.css";
-
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            }
-
-            html {
-                scroll-behavior: smooth;
-                min-height: 100vh;
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-position: center;
-                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            }
-
-            body {
-                background: linear-gradient(45deg, #24262b, #322447, #1f283f, #24262b);
-            }
-
-            .background-header {
-                background-image: url("asset foto/asset logo sekolah/birumerah.png");
-                image-resolution: 100dpi;
-                background-size: cover;
-                background-position: center;
-                padding-top: 100px;
-                padding-bottom: 270px;
-            }
-
-            .img-header {
-                display: flex;
-                justify-content: center;
-                margin-top: 80px;
-            }
-
-            header {
-                color: rgb(255, 255, 255);
-                padding: 20px;
-                position: fixed;
-                width: 100%;
-                top: 0;
-                z-index: 1000;
-                transition: background 0.3s ease;
-            }
-
-            .logo-nav-text {
-                font-size: 1.5rem;
-                font-weight: bold;
-                color: #fdfdfd;
-            }
-
-            .logo-nav {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-            nav {
-                background-color: rgb(83, 80, 233);
-                border-radius: 10px;
-                padding: 0 20px;
-                width: 100%;
-                height: 70px;
-                border-bottom: #ffffff 7px solid;
-            }
-
-            nav ul {
-                width: 100%;
-                list-style: none;
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-            }
-
-            nav li {
-                height: 50px;
-            }
-
-            nav a {
-                height: 140%;
-                padding: 0 30px;
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                color: rgb(251, 251, 251);
-                font-size: 1.5rem;
-                transition: background-color 0.3s ease;
-                position: flex;
-            }
-
-            nav a:hover {
-                background-color: #ffffff;
-            }
-
-            nav li:first-child {
-                margin-right: auto;
-            }
-
-            .sidebar {
-                position: fixed;
-                top: 0;
-                right: 0;
-                height: 100vh;
-                width: 250px;
-                background-color: rgba(255, 255, 255, 0.15);
-                box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
-                list-style: none;
-                display: none;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
-
-            .sidebar li {
-                width: 100%;
-            }
-
-            .sidebar a {
-                width: 100%;
-            }
-
-            .menu-button {
-                display: none;
-            }
-
-            @media (max-width: 1000px) {
-                .hideOnMobile {
-                    display: none;
-                }
-
-                .menu-button {
-                    display: block;
-                }
-            }
-
-            @media (max-width: 400px) {
-                .sidebar {
-                    width: 100%;
-                }
-            }
-
-            h2 {
-                text-align: center;
-                margin-top: 30px;
-                font-size: 2.5rem;
-                text-shadow: #000000 2px 2px 4px;
-                color: rgb(221, 224, 224);
-            }
-
-            p {
-                text-align: center;
-                margin-top: 10px;
-                font-size: 1.7rem;
-                color: #fdfdfd;
-                text-shadow: #000000 2px 2px 4px;
-                font-family: "poppins", "sans-serif";
-                text-transform: uppercase;
-                background: linear-gradient(to left, #d1f889, #ffffff, #44ecff, #c2ff8ded);
-                background-size: 200%;
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: animateGradient 3s linear infinite;
-            }
-
-            main-contentt {
-                position: center;
-                display: flex;
-            }
-
-            .pembatas1 {
-                text-align: center;
-                margin-top: 30px;
-                margin-bottom: 30px;
-                color: #fdfdfd;
-                background: #4e63cd;
-                padding: 15px;
-                border-radius: 10px;
-                width: 100%;
-            }
-
-            .pembatas1 h1 {
-                font-size: 3rem;
-                font-family: "poppins", "sans-serif";
-                text-transform: uppercase;
-                background: linear-gradient(to left, #d1f889, #ffffff, #000000, #c2ff8ded);
-                background-size: 200%;
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: animateGradient 3s linear infinite;
-            }
-
-            @keyframes animateGradient {
-                to {
-                    background-position: 200% 50%;
-                }
-            }
-
-            .pembatas2 {
-                text-align: center;
-                margin-top: 30px;
-                margin-bottom: 30px;
-                color: #fdfdfd;
-                background: #4e63cd;
-                padding: 15px;
-                border-radius: 10px;
-                width: 100%;
-            }
-
-            .pembatas2 h1 {
-                font-size: 2.5rem;
-                font-family: "poppins", "sans-serif";
-                text-transform: uppercase;
-                background: linear-gradient(to left, #d1f889, #ffffff, #000000, #c2ff8ded);
-                background-size: 200%;
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: animateGradient 4s linear infinite;
-            }
-
-            .carousel {
-                margin: 100px auto;
-                width: 90%;
-                display: flex;
-                border: 5px solid #272728;
-                overflow-x: auto;
-            }
-
-            .carousel::-webkit-scrollbar {
-                display: none;
-            }
-
-            .group {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 1em;
-                animation: spin 31s infinite linear;
-                padding-right: 0.5em;
-            }
-
-            .cardd {
-                flex: 0 0 5em;
-                height: 13em;
-                padding: auto;
-                background: #ffffff;
-                font-size: 3rem;
-                border-radius: 0.2em;
-                text-align: center;
-                align-content: center;
-                display: -webkit-inline-flex;
-            }
-
-            @keyframes spin {
-                from {
-                    translate: 0;
-                }
-
-                to {
-                    translate: -100%;
-                }
-            }
-
-            .container {
-                max-width: 1200px;
-                margin: 40px auto;
-                padding: 0 20px;
-            }
-
-            .grid-wrapper {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                gap: 25px;
-            }
-
-            .student-card {
-                background: linear-gradient(45deg,
-                        #908a94,
-                        #aa60ff,
-                        #a699ac,
-                        #725ae8,
-                        #5257e8,
-                        #6499e8,
-                        #8c6e97,
-                        #5500ff,
-                        #ae9abb);
-                border-radius: 12px;
-                padding: 20px;
-                text-align: center;
-                box-shadow: 0 8px 10px rgba(0, 0, 0, 0.05);
-                transition:
-                    transform 0.2s,
-                    box-shadow 0.2s;
-                cursor: pointer;
-                position: relative;
-                overflow: hidden;
-                border-top: 5px solid #2877ff;
-            }
-
-            .student-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-            }
-
-            .card-avatar {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                object-fit: cover;
-                border: 3px solid #ffffff;
-                margin-bottom: 15px;
-            }
-
-            .student-name {
-                font-size: 1.25rem;
-                font-weight: 700;
-                color: #fffdfd;
-                margin-bottom: 5px;
-            }
-
-            .student-role {
-                display: inline-block;
-                background-color: #ffffff;
-                color: #0778fa;
-                padding: 4px 12px;
-                border-radius: 20px;
-                font-size: 0.85rem;
-                font-weight: 600;
-            }
-
-            .click-hint {
-                margin-top: 15px;
-                font-size: 0.8rem;
-                color: #fbfbfb;
-            }
-
-            .modal-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                padding: 20px;
-            }
-
-            .modal-overlay.active {
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .modal-content {
-                background: linear-gradient(135deg, #9babc6 0%, #866c86 100%);
-                width: 100%;
-                max-width: 500px;
-                border-radius: 15px;
-                overflow: hidden;
-                transform: scale(0.7);
-                transition: transform 0.3s ease;
-                position: relative;
-            }
-
-            .modal-overlay.active .modal-content {
-                transform: scale(1);
-            }
-
-            .modal-header {
-                background: linear-gradient(45deg, #e8fcff, #b38bc1);
-                padding: 20px;
-                text-align: center;
-                color: rgb(64, 51, 172);
-                position: relative;
-            }
-
-            .close-btn {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                color: rgb(244, 244, 244);
-                font-size: 1.5rem;
-                cursor: pointer;
-                width: 35px;
-                height: 35px;
-                border-radius: 50%;
-                line-height: 35px;
-            }
-
-            .close-btn:hover {
-                background: rgba(255, 255, 255, 0.4);
-            }
-
-            .modal-img {
-                width: 120px;
-                height: 120px;
-                border-radius: 50%;
-                border: 4px solid rgb(255, 255, 255);
-                object-fit: cover;
-                margin-bottom: 10px;
-            }
-
-            .modal-body {
-                padding: 25px;
-            }
-
-            .info-group {
-                margin-bottom: 15px;
-                border-bottom: 1px solid #000000;
-                padding-bottom: 10px;
-            }
-
-            .info-group:last-child {
-                border-bottom: none;
-            }
-
-            .info-label {
-                font-weight: bold;
-                color: #ffffff;
-                display: block;
-                margin-bottom: 5px;
-            }
-
-            .info-value {
-                color: #333;
-                font-size: 1rem;
-            }
-
-            .skill-badge {
-                display: inline-block;
-                background: #2a5298;
-                color: white;
-                padding: 3px 10px;
-                border-radius: 4px;
-                font-size: 0.85rem;
-                margin-right: 5px;
-                margin-bottom: 5px;
-            }
-
-            @media (max-width: 600px) {
-                header h1 {
-                    font-size: 2rem;
-                }
-
-                .modal-content {
-                    width: 95%;
-                }
-            }
-
-            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-
-            body {
-                line-height: 1.5;
-                font-family: "Poppins", sans-serif;
-            }
-
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            .container {
-                max-width: 1170px;
-                margin: auto;
-            }
-
-            .row {
-                display: flex;
-                flex-wrap: wrap;
-            }
-
-            ul {
-                list-style: none;
-            }
-
-            .footer {
-                background-color: #24262b;
-                padding: 70px 0;
-                border-top: 5px solid #3d1ee9;
-            }
-
-            .footer-col {
-                width: 25%;
-                padding: 0 15px;
-            }
-
-            .footer-col h4 {
-                font-size: 18px;
-                color: #ffffff;
-                text-transform: capitalize;
-                margin-bottom: 35px;
-                font-weight: 500;
-                position: relative;
-            }
-
-            .footer-col h4::before {
-                content: "";
-                position: absolute;
-                left: 0;
-                bottom: -10px;
-                background-color: #3d1ee9;
-                height: 2px;
-                box-sizing: border-box;
-                width: 50px;
-            }
-
-            .footer-col ul li:not(:last-child) {
-                margin-bottom: 10px;
-            }
-
-            .footer-col ul li a {
-                font-size: 16px;
-                text-transform: capitalize;
-                color: #ffffff;
-                text-decoration: none;
-                font-weight: 300;
-                color: #bbbbbb;
-                display: block;
-                transition: all 0.3s ease;
-            }
-
-            .footer-col ul li a:hover {
-                color: #ffffff;
-                padding-left: 8px;
-            }
-
-            .footer-col .social-links a {
-                display: inline-block;
-                height: 40px;
-                width: 40px;
-                background-color: rgba(255, 255, 255, 0.2);
-                margin: 0 10px 10px 0;
-                text-align: center;
-                line-height: 40px;
-                border-radius: 50%;
-                color: #ffffff;
-                transition: all 0.5s ease;
-            }
-
-            .footer-col .social-links a:hover {
-                color: #24262b;
-                background-color: #ffffff;
-            }
-
-            @media (max-width: 767px) {
-                .footer-col {
-                    width: 50%;
-                    margin-bottom: 30px;
-                }
-            }
-
-            @media (max-width: 574px) {
-                .footer-col {
-                    width: 100%;
-                }
-            }
-        </style>
-
-    <!--    PEMBATAS     -->
-
-        <script>
-            alert("DISARANKAN UNTUK MEMBUKA WEB INI DENGAN MENGGUNAKAN MODE DESKTOP.");
-
-            const students = [{
-                    name: "Bapak Irfan Priyono S.Kom",
-                    role: "KAKOMLI IT",
-                    address: "-",
-                    skills: ["", "-", "-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto guru/sementara.png",
-                },
-                {
-                    name: "Bapak Andies Pramudiyantoro, S.Kom",
-                    role: "Wali Kelas",
-                    address: "-",
-                    skills: ["Manajemen Kelas", "-", "-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Affandi Fathurrahman",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Ahmad Barrak Neil Fadli H.",
-                    role: "Siswa",
-                    address: "urip iku urup",
-                    skills: ["cosplay mayit"],
-                    hobby: "turu",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Alecia Poppy Shakira Ayu K.",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Alexa Aditya Cindra Dewi.",
-                    role: "Sekretaris",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Amanda Cinthya Kasih",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Ardilla Wahyuning Putri",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Aretha Maulina Noviatin",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Atha Thandagra Suryansyah",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: `asset foto/asset foto siswa/sementara.png`,
-                },
-                {
-                    name: "Bagas Ardiansyah",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Candy Al Azka",
-                    role: "Bendahara",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Celsia Ramadhani",
-                    role: "Persensi",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Celvin Yoga Alvino",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Dimas Riang Ilham Saputra",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Diva Ayu Permata ",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Ena Zivanna Idelia Gita",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Ficko Adiputra Perdana",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "bantai ade-adean cs",
-                    photo: "asset foto/asset foto siswa/eko.png",
-                },
-                {
-                    name: "Gayuh Gita Yulia Natasya",
-                    role: "Siswa",
-                    address: "mabar epep,emel.roblox",
-                    skills: ["turunin bintng rank", "id:7550916234"],
-                    hobby: "gaming",
-                    photo: "asset foto/asset foto siswa/gita.png",
-                },
-                {
-                    name: "Gilang Nur Maulida Faid",
-                    role: "Siswa",
-                    address: "pengen dadi ultramen",
-                    skills: ["Gaming", "Coding", "Reading"],
-                    hobby: "Game, baca manhwa, coding, turu",
-                    photo: "asset foto/asset foto siswa/apalah.png",
-                },
-                {
-                    name: "Helcia Andika Putri",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Hendri Setiawana",
-                    role: "Persensi",
-                    address: "",
-                    skills: [""],
-                    hobby: "",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Ilham Rofiq Ananda Barocta",
-                    role: "Siswa",
-                    address: "ora ruh",
-                    skills: ["main gripen"],
-                    hobby: "main gripen",
-                    photo: "asset foto/asset foto siswa/download.png",
-                },
-                {
-                    name: "Julian Tri Pratama",
-                    role: "Ketua Kelas",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Kenza Pratama",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Khaula Nendra Sukma A",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "coli",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Muhammad Akbar Fikriansyah",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Meta Evrilya Giovanny",
-                    role: "Wakil Ketua Kelas",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Nabila `Atha Nur Alfiyah",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Nurul Safika",
-                    role: "Siswa",
-                    address: "one day i am gonna grow a wings.",
-                    skills: ["tau kalau gilang suka boonk"],
-                    hobby: "ngejek muji dan ibak ",
-                    photo: "asset foto/asset foto siswa/bakekok.png",
-                },
-                {
-                    name: "Ragil Bagus Nugroho",
-                    role: "Bendahara",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Ragil Satria Risdiyanto",
-                    role: "Siswa",
-                    address: "-",
-                    skills: [" ngloooco"],
-                    hobby: "lihat bokep",
-                    photo: "asset foto/asset foto siswa/ragel edan.png",
-                },
-                {
-                    name: "Relyta Triya Ayu Lestari",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Rifky Aditya Saputra",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Satria Pradika Bayu Pratama",
-                    role: "Siswa",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-                {
-                    name: "Sulthan Pasha Ibrahim Sukarno",
-                    role: "Sekretaris",
-                    address: "-",
-                    skills: ["-"],
-                    hobby: "-",
-                    photo: "asset foto/asset foto siswa/sementara.png",
-                },
-            ];
-
-            function showSidebar() {
-                const sidebar = document.querySelector(".sidebar");
-                sidebar.style.display = "flex";
-            }
-
-            function hideSidebar() {
-                const sidebar = document.querySelector(".sidebar");
-                sidebar.style.display = "none";
-            }
-
-            function scrollToSection(id) {
-                document.getElementById(id).scrollIntoView({
-                    behavior: "smooth"
+    </div>
+
+    <script>
+        let currentStudent = null;
+        let editMode = false;
+
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('open')
+        }
+
+        function toggleEditMode(showEdit) {
+            editMode = showEdit;
+            const details = document.getElementById('modalDetails');
+            const form = document.getElementById('editForm');
+            const toggleBtn = document.getElementById('editToggleBtn');
+            const actions = document.getElementById('modalActions');
+            
+            if (showEdit) {
+                details.style.display = 'none';
+                form.style.display = 'block';
+                toggleBtn.textContent = '👁️ View';
+                toggleBtn.style.background = '#6b46c1';
+                form.querySelectorAll('input, textarea').forEach(input => {
+                    input.style.borderColor = 'var(--accent)';
                 });
+            } else {
+                details.style.display = 'block';
+                form.style.display = 'none';
+                toggleBtn.textContent = '✏️ Edit';
+                toggleBtn.style.background = '#10b981';
             }
+        }
 
-            const gridContainer = document.getElementById("student-grid");
-            const modal = document.getElementById("modal");
+        function editStudent(student) {
+            openModal(student);
+            setTimeout(() => toggleEditMode(true), 100);
+            document.getElementById('editId').value = student._id.$oid || student._id;
+            document.getElementById('editName').value = student.name || '';
+            document.getElementById('editRole').value = student.role || '';
+            document.getElementById('editPhoto').value = student.photo || '';
+            document.getElementById('editAddress').value = student.address || '';
+            document.getElementById('editSkills').value = Array.isArray(student.skills) ? student.skills.join(', ') : '';
+            document.getElementById('editHobby').value = student.hobby || '';
+        }
 
-            function renderCards() {
-                gridContainer.innerHTML = "";
-                students.forEach((student, index) => {
-                    const card = document.createElement("div");
-                    card.className = "student-card";
-                    card.onclick = () => openModal(index);
+        function scrollTo(id) {
+            document.querySelector(id).scrollIntoView({
+                behavior: 'smooth'
+            })
+        }
 
-                    card.innerHTML = `
-                    <img src="${student.photo}" alt="${student.name}" class="card-avatar">
-                    <div class="student-name">${student.name}</div>
-                    <div class="student-role">${student.role}</div>
-                    <div class="click-hint">Klik untuk detail</div>
-                `;
-                    gridContainer.appendChild(card);
-                });
+        document.getElementById('studentForm')?.addEventListener('submit', async e => {
+            e.preventDefault()
+            const fd = new FormData(e.target)
+            const formData = new FormData()
+            formData.append('add_student', '1')
+            for (let [key, value] of fd.entries()) {
+                formData.append(key, value)
             }
-
-            function openModal(index) {
-                const data = students[index];
-
-                document.getElementById("modal-img").src = data.photo;
-                document.getElementById("modal-name").innerText = data.name;
-                document.getElementById("modal-role").innerText = data.role;
-                document.getElementById("modal-address").innerText = data.address;
-                document.getElementById("modal-hobby").innerText = data.hobby;
-
-                const skillsContainer = document.getElementById("modal-skills");
-                skillsContainer.innerHTML = "";
-                data.skills.forEach((skill) => {
-                    const badge = document.createElement("span");
-                    badge.className = "skill-badge";
-                    badge.innerText = skill;
-                    skillsContainer.appendChild(badge);
-                });
-
-                modal.classList.add("active");
+            try {
+                const res = await fetch('', {
+                    method: 'POST',
+                    body: formData
+                })
+                const data = await res.json()
+                if (data.success) {
+                    alert('✅ Siswa berhasil ditambahkan!')
+                    location.reload()
+                } else alert('❌ Error: ' + data.error)
+            } catch (err) {
+                alert('❌ Gagal: ' + err)
             }
+        })
 
-            function closeModal() {
-                modal.classList.remove("active");
-            }
-
-            modal.addEventListener("click", (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-
-            renderCards();
-
-            function tampilkanNilai() {
-                const outputElement = document.getElementById("outputNilai");
-
-                if (outputElement.style.display === "block") {
-                    outputElement.style.display = "none";
+        document.getElementById('editForm')?.addEventListener('submit', async e => {
+            e.preventDefault()
+            const fd = new FormData(e.target)
+            fd.append('update_student', '1')
+            try {
+                const res = await fetch('', {
+                    method: 'POST',
+                    body: fd
+                })
+                const data = await res.json()
+                if (data.success) {
+                    alert('✅ Data siswa berhasil diupdate!')
+                    toggleEditMode(false)
+                    location.reload()
                 } else {
-                    outputElement.style.display = "block";
+                    alert('❌ Error: ' + data.error)
                 }
+            } catch (err) {
+                alert('❌ Gagal update: ' + err)
             }
+        })
 
-            function TombolMenu() {
-                const menu = document.getElementById("menu");
-                menu.classList.toggle("open");
+
+        function openModal(student) {
+            currentStudent = student
+            editMode = false;
+            document.getElementById('modalPhoto').src = student.photo || 'asset foto/asset foto siswa/sementara.png'
+            document.getElementById('modalName').textContent = student.name
+            document.getElementById('modalRole').textContent = student.role || 'Siswa'
+            document.getElementById('modalDetails').innerHTML = `
+<i class="fas fa-quote-left"></i> ${student.address||'Siswa luar biasa'}<br>
+${student.skills?.length?`<i class="fas fa-cogs"></i> ${student.skills.join(', ')}<br>`:''}
+<i class="fas fa-heart"></i> ${student.hobby||'Belum diketahui'}
+`
+            document.getElementById('editForm').style.display = 'none';
+            document.getElementById('modalDetails').style.display = 'block';
+            const toggleBtn = document.getElementById('editToggleBtn');
+            if (toggleBtn) {
+                toggleBtn.textContent = '✏️ Edit';
+                toggleBtn.style.background = '#10b981';
+                toggleBtn.style.display = 'inline-block';
             }
+            document.getElementById('modal').classList.add('active')
+        }
 
-            function scrollToSection(id) {
-                document.getElementById(id).scrollIntoView({
-                    behavior: "smooth"
-                });
+        function closeModal(e) {
+            document.getElementById('modal').classList.remove('active')
+        }
+
+        async function deleteStudent(student) {
+            if (!confirm('Hapus ' + student.name + '?')) return
+            try {
+                await fetch(`?delete=${student._id}`)
+                alert('✅ Dihapus!')
+                location.reload()
+            } catch (err) {
+                alert('❌ Gagal hapus')
             }
+        }
 
-            window.addEventListener("scroll", () => {
-                const header = document.getElementById("header");
-                if (window.scrollY > 50) {
-                    header.classList.add("scrolled");
-                } else {
-                    header.classList.remove("scrolled");
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.student-card').forEach((card, i) => {
+                const rect = card.getBoundingClientRect()
+                if (rect.top < window.innerHeight) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)'
                 }
-            });
-
-            let currentSlide = 0;
-            const slides = document.querySelectorAll(".slide");
-
-            function showSlide(index) {
-                slides.forEach((slide) => slide.classList.remove("active"));
-                slides[index].classList.add("active");
-            }
-
-            function nextSlide() {
-                currentSlide = (currentSlide + 1) % slides.length;
-                showSlide(currentSlide);
-            }
-            setInterval(nextSlide, 3000);
-
-            function playVideo() {
-                const video = document.getElementById("myVideo");
-                const overlay = document.getElementById("videoOverlay");
-                video.play();
-                overlay.style.opacity = "0";
-                setTimeout(() => (overlay.style.display = "none"), 500);
-            }
-
-            function createRipple(event) {
-                const button = event.currentTarget;
-                const circle = document.createElement("span");
-                const diameter = Math.max(button.clientWidth, button.clientHeight);
-                const radius = diameter / 2;
-                circle.style.width = circle.style.height = `${diameter}px`;
-                circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-                circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-                circle.classList.add("ripple");
-                button.appendChild(circle);
-                setTimeout(() => circle.remove(), 600);
-            }
-
-            const scrollElements = document.querySelectorAll(".scroll-element");
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("visible");
-                    }
-                });
-            });
-            scrollElements.forEach((el) => observer.observe(el));
-
-            window.addEventListener("scroll", () => {
-                const skills = document.querySelectorAll(".skill-fill");
-                skills.forEach((skill) => {
-                    const rect = skill.getBoundingClientRect();
-                    if (rect.top < window.innerHeight) {
-                        skill.classList.add("animate");
-                    }
-                });
-            });
-        </script>
+            })
+        })
+    </script>
 </body>
 
 </html>

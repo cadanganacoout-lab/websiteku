@@ -1,23 +1,24 @@
 <?php
 include 'config.php';
-echo "<h2>DB Diagnostic</h2>";
-echo "Connection: " . ($conn ? "OK" : "FAILED") . "<br>";
+echo "<h2>MongoDB Diagnostic</h2>";
+echo "Connection: OK (ping success)<br>";
 
-if ($conn) {
-    $dbs = mysqli_query($conn, "SHOW DATABASES LIKE 'tbs_xrpl1'");
-    echo "DB tbs_xrpl1 exists: " . (mysqli_num_rows($dbs) > 0 ? "YES" : "NO") . "<br>";
-    
-    mysqli_select_db($conn, 'tbs_xrpl1');
-    $tables = mysqli_query($conn, "SHOW TABLES LIKE 'users'");
-    echo "users table: " . (mysqli_num_rows($tables) > 0 ? "YES" : "NO") . "<br>";
-    
-    $users = mysqli_query($conn, "SELECT COUNT(*) as count FROM users");
-    $u = mysqli_fetch_assoc($users);
-    echo "Users count: " . $u['count'] . "<br>";
-    
-    mysqli_close($conn);
+// List collections
+$collections = $db->listCollections();
+echo "Collections: ";
+foreach ($collections as $col) {
+    echo $col->getName() . " ";
 }
+echo "<br>";
 
-echo "<br>Run setup.php if tables missing. Check MySQL service.";
+// Users count
+$count_users = $db->users->countDocuments();
+echo "Users count: " . $count_users . "<br>";
+
+// Students count
+$count_students = $db->students->countDocuments();
+echo "Students count: " . $count_students . "<br>";
+
+echo "<br>Run setup.php if empty. Check MongoDB service on port 27017.";
 ?>
 

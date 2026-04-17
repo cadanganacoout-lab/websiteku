@@ -19,8 +19,8 @@ function openModal(index) {
 
     const skillsContainer = document.getElementById('modal-skills');
     skillsContainer.innerHTML = '';
-    if (data.skills) {
-        JSON.parse(data.skills).forEach(skill => {
+    if (data.skills && Array.isArray(data.skills)) {
+        data.skills.forEach(skill => {
             const badge = document.createElement('span');
             badge.className = 'skill-badge';
             badge.textContent = skill;
@@ -70,11 +70,9 @@ function addStudent() {
     const form = document.getElementById('addStudentForm');
     const formData = new FormData(form);
     const skillsStr = document.getElementById('skills_str').value;
-    const skills = skillsStr ? skillsStr.split(',').map(s => s.trim()).filter(s => s) : [];
-    formData.append('skills', JSON.stringify(skills));
-    formData.append('add_student', 1);
+    formData.append('add_student', '1');
     
-    fetch('index.php', {
+    fetch('', {  // Same page
         method: 'POST',
         body: formData
     }).then(res => res.json()).then(data => {
@@ -89,9 +87,36 @@ function addStudent() {
 
 function deleteStudent(id) {
     if (confirm('Hapus siswa ini?')) {
-        fetch(`index.php?action=delete&id=${id}`).then(res => res.json()).then(data => {
+        fetch(`?action=delete&id=${id}`).then(res => res.json()).then(data => {
             if (data.success) location.reload();
+            else alert('Error: ' + (data.error || 'Unknown'));
+        }).catch(err => alert('Delete failed'));
+    }
+}
+
+// Update openModal to set current ID for delete
+function openModal(index) {
+    const data = students[index];
+    document.getElementById('modal-img').src = data.photo || 'asset foto/asset foto siswa/sementara.png';
+    document.getElementById('modal-name').textContent = data.name;
+    document.getElementById('modal-role').textContent = data.role;
+    document.getElementById('modal-address').textContent = data.address || '';
+    document.getElementById('modal-hobby').textContent = data.hobby || '';
+
+    const skillsContainer = document.getElementById('modal-skills');
+    skillsContainer.innerHTML = '';
+    if (data.skills && Array.isArray(data.skills)) {
+        data.skills.forEach(skill => {
+            const badge = document.createElement('span');
+            badge.className = 'skill-badge';
+            badge.textContent = skill;
+            skillsContainer.appendChild(badge);
         });
     }
+
+    // Set global for delete
+    window.currentStudentId = data._id;
+
+    document.getElementById('modal').classList.add('active');
 }
 

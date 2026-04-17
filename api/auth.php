@@ -12,16 +12,20 @@ if (isset($_POST['login'])) {
         exit();
     }
 
-    $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($user = $result->fetch_assoc()) {
-        if (password_verify($password, $user['password'])) {
-            $_SESSION['admin_logged_in'] = true;
-            $_SESSION['admin_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
+    try {
+        $user = $db->users->findOne(['username' => $username]);
+        if ($user && password_verify($password, $user['password'])) {
+            $userRole = $user['role'] ?? 'user';
+            if ($userRole === 'admin') {
+                $_SESSION['admin_logged_in'] = true;
+                $_SESSION['admin_id'] = (string)$user['_id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = 'admin';
+            } else {
+                $_SESSION['user_logged_in'] = true;
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $userRole;
+            }
             header("Location: index.php");
             exit();
         } else {
@@ -29,12 +33,11 @@ if (isset($_POST['login'])) {
             header("Location: login.php");
             exit();
         }
-    } else {
-        $_SESSION['login_error'] = "Username atau password salah!";
+    } catch (Exception $e) {
+        $_SESSION['login_error'] = "Database error: " . $e->getMessage();
         header("Location: login.php");
         exit();
     }
-    $stmt->close();
 }
 
 // Redirect if already logged in
@@ -43,3 +46,4 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     exit();
 }
 ?>
+
