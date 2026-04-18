@@ -3,9 +3,6 @@
 // Cek apakah vendor ada di luar folder api (untuk lokal dan vercel)
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     require_once __DIR__ . '/../vendor/autoload.php';
-} else {
-    // Jika vercel meletakkan vendor di tempat berbeda saat runtime
-    require_once __DIR__ . '/vendor/autoload.php';
 }
 
 

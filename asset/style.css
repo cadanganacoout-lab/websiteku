@@ -20,7 +20,7 @@ body {
 }
 
 .background-header {
-    background-image: url("../asset foto/asset logo sekolah/birumerah.png");
+background-image: url("../asset/asset_foto/asset_logo_sekolah/birumerah.png");
     background-size: cover;
     background-position: center;
     padding: 100px 20px 270px;

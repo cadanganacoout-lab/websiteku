@@ -11,7 +11,7 @@ function hideSidebar() {
 
 function openModal(index) {
     const data = students[index];
-    document.getElementById('modal-img').src = data.photo || 'asset foto/asset foto siswa/sementara.png';
+    document.getElementById('modal-img').src = data.photo || '../asset/asset_foto/asset_foto_siswa/sementara.png';
     document.getElementById('modal-name').textContent = data.name;
     document.getElementById('modal-role').textContent = data.role;
     document.getElementById('modal-address').textContent = data.address || '';
@@ -44,7 +44,7 @@ function renderStudents(studentsData) {
         card.className = 'student-card';
         card.onclick = () => openModal(index);
         card.innerHTML = `
-            <img src="${student.photo || 'asset foto/asset foto siswa/sementara.png'}" alt="${student.name}" class="card-avatar">
+            <img src="${student.photo || '../asset/asset_foto/asset_foto_siswa/sementara.png'}" alt="${student.name}" class="card-avatar">
             <div class="student-name">${student.name}</div>
             <div class="student-role">${student.role || 'Siswa'}</div>
             <div class="click-hint">Klik untuk detail</div>
@@ -97,7 +97,7 @@ function deleteStudent(id) {
 // Update openModal to set current ID for delete
 function openModal(index) {
     const data = students[index];
-    document.getElementById('modal-img').src = data.photo || 'asset foto/asset foto siswa/sementara.png';
+    document.getElementById('modal-img').src = data.photo || '../asset/asset_foto/asset_foto_siswa/sementara.png';
     document.getElementById('modal-name').textContent = data.name;
     document.getElementById('modal-role').textContent = data.role;
     document.getElementById('modal-address').textContent = data.address || '';

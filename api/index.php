@@ -17,7 +17,8 @@ if ($_POST && isset($_POST['add_student']) && $is_admin) {
         'address' => $_POST['address'] ?? '',
         'skills' => !empty($_POST['skills']) ? explode(',', $_POST['skills']) : [],
         'hobby' => $_POST['hobby'] ?? '',
-        'created_at' => new UTCDateTime()
+        'created_at' => new UTCDateTime(),
+        'rank' => 99  // New students get low rank
     ];
     $result = $db->students->insertOne($data);
     exit(json_encode(['success' => true]));
@@ -41,11 +42,11 @@ if ($_POST && isset($_POST['update_student']) && $is_admin) {
         if (!empty($_POST['address'])) $update['$set']['address'] = trim($_POST['address']);
         if (!empty($_POST['skills'])) $update['$set']['skills'] = array_map('trim', explode(',', $_POST['skills']));
         if (!empty($_POST['hobby'])) $update['$set']['hobby'] = trim($_POST['hobby']);
-        
+
         if (empty($update['$set'])) {
             exit(json_encode(['success' => false, 'error' => 'No fields to update']));
         }
-        
+
         $result = $db->students->updateOne(['_id' => $id], $update);
         if ($result->getMatchedCount() > 0) {
             exit(json_encode(['success' => true]));
@@ -57,13 +58,9 @@ if ($_POST && isset($_POST['update_student']) && $is_admin) {
     }
 }
 
-
-$students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, 'name' => 1]]));
+$students = iterator_to_array($db->students->find([], ['sort' => ['rank' => 1, 'name' => 1]]));
 ?>
 <!DOCTYPE html>
-<html lang="id">
-
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>X RPL 1 | SMK PGRI 2 Ponorogo</title>
@@ -83,6 +80,10 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
             --accent: #ed64a6;
             --bg: #0f0f23;
             --card-bg: linear-gradient(135deg, #1e1b4b, #2d1b69)
+        }
+
+        html {
+            scroll-behavior: smooth
         }
 
         body {
@@ -320,41 +321,46 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
             color: var(--accent)
         }
 
-        .album {
-            position: relative;
-            overflow: hidden;
-            border-radius: 20px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, .4);
-            margin: 3rem 0
-        }
-
-        .album-track {
+        .carousel {
+            margin: 100px auto;
+            width: 90%;
             display: flex;
-            animation: scroll 40s linear infinite
+            border: 5px solid #272728;
+            overflow-x: auto;
         }
 
-        .album-card {
-            flex: 0 0 400px;
-            height: 300px;
-            margin-right: 1.5rem;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, .3)
+        .carousel::-webkit-scrollbar {
+            display: none;
         }
 
-        .album-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover
+        .group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1em;
+            animation: spin 48s infinite linear;
+            padding-right: 0.5em;
         }
 
-        @keyframes scroll {
-            0% {
-                transform: translateX(0)
+        .cardd {
+            width: max-content;
+            height: 600px;
+            object-fit: cover;
+            background: #ffffff;
+            font-size: 3rem;
+            border-radius: 0.2em;
+            text-align: center;
+            align-content: center;
+            display: -webkit-inline-flex;
+        }
+
+        @keyframes spin {
+            from {
+                translate: 0;
             }
 
-            100% {
-                transform: translateX(-50%)
+            to {
+                translate: -100%;
             }
         }
 
@@ -404,6 +410,11 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
             cursor: pointer;
             transition: all .3s
         }
+
+        .btn a {
+            color: white;
+            text-decoration: none
+        }   
 
         .btn:hover {
             background: var(--secondary);
@@ -570,7 +581,7 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
     <section id="home" class="hero">
         <h1>Kelas X RPL 1</h1>
         <p>Rekayasa Perangkat Lunak - SMK PGRI 2 Ponorogo. Temukan struktur lengkap kelas, wali kelas, dan kenangan foto bersama kami!</p>
-        <button class="cta" onclick="scrollTo('#struktur')">Lihat Struktur Kelas</button>
+        <a href="#struktur" class="btn">Lihat Strukur kelas</a>
     </section>
 
     <section id="struktur" class="section">
@@ -600,9 +611,9 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
                         <?php if (!empty($s['hobby'])): ?><br><i class="fas fa-gamepad"></i> <?= $s['hobby'] ?><?php endif; ?>
                     </div>
                     <?php if ($is_admin): ?>
-                    <div style="margin-top: 1rem;">
-                        <button class="btn" style="background: #10b981; padding: .5rem 1rem; font-size: .9rem;" onclick="editStudent(<?= json_encode($s) ?>); event.stopPropagation();">✏️ Edit</button>
-                    </div>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn" style="background: #10b981; padding: .5rem 1rem; font-size: .9rem;" onclick="editStudent(<?= json_encode($s) ?>); event.stopPropagation();">✏️ Edit</button>
+                        </div>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
@@ -611,19 +622,47 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
 
     <section id="album" class="section">
         <h2>Galeri Foto Kelas</h2>
-        <div class="album">
-            <div class="album-track" id="albumTrack">
-                <?php
-                $photos = ['agit.png', 'bintalsik.png', 'bintalsik2.png', 'bukber.png', 'dirumahpakandies.png', 'fotobersama.png', 'gaje.png', 'gajev2.png', 'jaman majapahit.png', 'last mpls.png', 'mujahadah.png', 'opo i.png', 'pondokcw.png', 'pondokcwk.png', 'sejarahv2.png', 'sejorh.png', 'terawih.png', 'withpakendi.png'];
-                foreach ($photos as $p) {
-                    echo "<div class='album-card'><img src='../asset/asset_foto/asset_foto_album/$p' loading='lazy'></div>";
-                }
-                foreach ($photos as $p) {
-                    echo "<div class='album-card'><img src='../asset/asset_foto/asset_foto_album/$p' loading='lazy'></div>";
-                } // Duplicate for infinite
-                ?>
+        <div class="carousel">
+            <div class="group">
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/dirumahpakandies.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/agit.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/bintalsik.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/bintalsik2.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/mujahadah.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/withpakendi.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/fotobersama.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/jaman_majapahit.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/last _mpls.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/opo_i.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/pondokcwk.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/pondokcw.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/terawih.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/bukber.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/gajev2.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/gaje.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/sejorh.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/sejarahv2.png" alt=""></div>
+                </div>
+                <div aria-hidden class="group">
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/dirumahpakandies.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/agit.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/bintalsik.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/bintalsik2.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/mujahadah.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/withpakendi.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/fotobersama.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/jaman_majapahit.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/last _mpls.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/opo_i.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/pondokcwk.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/pondokcw.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/terawih.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/bukber.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/gajev2.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/gaje.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/sejorh.png" alt=""></div>
+                    <div class="cardd"><img src="../asset/asset_foto/asset_foto_album/sejarahv2.png" alt=""></div>
             </div>
-        </div>
     </section>
 
     <footer id="kontak">
@@ -657,7 +696,7 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
                 <button type="submit" class="btn" style="background: #f59e0b;">💾 Update Siswa</button>
             </form>
             <?php if ($is_admin): ?>
-            <button class="btn" onclick="toggleEditMode(false)" id="editToggleBtn" style="background: #10b981;">✏️ Edit Mode</button>
+                <button class="btn" onclick="toggleEditMode(false)" id="editToggleBtn" style="background: #10b981;">✏️ Edit Mode</button>
             <?php endif; ?>
         </div>
     </div>
@@ -676,7 +715,7 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, '
             const form = document.getElementById('editForm');
             const toggleBtn = document.getElementById('editToggleBtn');
             const actions = document.getElementById('modalActions');
-            
+
             if (showEdit) {
                 details.style.display = 'none';
                 form.style.display = 'block';
@@ -805,5 +844,4 @@ ${student.skills?.length?`<i class="fas fa-cogs"></i> ${student.skills.join(', '
         })
     </script>
 </body>
-
 </html>

@@ -1,13 +1,8 @@
-# Restrict Student Management to Admin Role Only
+# Fix Siswa Terpopuler &amp; Dashboard
 
-## Status: [IN PROGRESS] ⏳
-
-### Plan Breakdown:
-1. ✅ [DONE] Understand files & issue (auth sets admin session for all logins)
-2. ✅ Edit api/proses_register.php - Add 'role' => 'user' for new registrations
-3. ✅ Edit api/auth.php - Check user role before setting admin session
-4. ✅ Edit api/index.php - Strengthen server-side admin checks for CRUD (add_student requires $is_admin, update strengthened)
-5. [PENDING] 🧪 Test non-admin login (no panel), admin login (full access)
-6. ✅ Update TODO.md
-
-**Next Step**: Edit api/proses_register.php
+## Steps:
+- [ ] 1. Edit api/populate_students.php: Remove session check, add &#39;rank&#39; = index (0 first = terpopuler), upsert all (update existing).
+- [ ] 2. Run `php api/populate_students.php`
+- [ ] 3. Edit api/index.php: Change students sort to [&#39;rank&#39; => -1, &#39;name&#39; => 1]
+- [ ] 4. Test dashboard (`php -S localhost:8000`)
+- [ ] Done
