@@ -64,4 +64,3 @@ foreach ($hardcoded as $index => $s) {
 
 echo "Updated $update_count, added $success_count students with rank (0 = terpopuler). Total: " . count($hardcoded) . ". Check diagnostic.php.\n";
 ?>
-

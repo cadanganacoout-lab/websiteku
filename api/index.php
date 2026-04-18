@@ -17,8 +17,7 @@ if ($_POST && isset($_POST['add_student']) && $is_admin) {
         'address' => $_POST['address'] ?? '',
         'skills' => !empty($_POST['skills']) ? explode(',', $_POST['skills']) : [],
         'hobby' => $_POST['hobby'] ?? '',
-        'created_at' => new UTCDateTime(),
-        'rank' => 99  // New students get low rank
+        'created_at' => new UTCDateTime()
     ];
     $result = $db->students->insertOne($data);
     exit(json_encode(['success' => true]));
@@ -58,9 +57,13 @@ if ($_POST && isset($_POST['update_student']) && $is_admin) {
     }
 }
 
-$students = iterator_to_array($db->students->find([], ['sort' => ['rank' => 1, 'name' => 1]]));
+
+$students = iterator_to_array($db->students->find([], ['sort' => ['role' => 1, 'name' => 1]]));
 ?>
 <!DOCTYPE html>
+<html lang="id">
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>X RPL 1 | SMK PGRI 2 Ponorogo</title>
@@ -410,11 +413,6 @@ $students = iterator_to_array($db->students->find([], ['sort' => ['rank' => 1, '
             cursor: pointer;
             transition: all .3s
         }
-
-        .btn a {
-            color: white;
-            text-decoration: none
-        }   
 
         .btn:hover {
             background: var(--secondary);
