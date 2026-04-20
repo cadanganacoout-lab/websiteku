@@ -1,11 +1,12 @@
 {
   "$schema": "https://railway.com",
   "build": {
-    "builder": "DOCKER"
+    "builder": "DOCKER",
+    "dockerfilePath": "Dockerfile"
   },
   "deploy": {
     "startCommand": "apache2-foreground",
-    "restartPolicyType": "ON_FAILURE",
-    "healthcheckPath": "/"
+    "healthcheckPath": "/",
+    "restartPolicyType": "ON_FAILURE"
   }
 }
