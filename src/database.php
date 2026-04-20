@@ -7,7 +7,7 @@ class Database {
     private $collection;
 
     public function __construct() {
-        $uri = getenv('MONGODB_URI');
+$uri = $_ENV['MONGODB_URI'] ?? 'mongodb://localhost:27017';
 
         try {
             $client = new Client($uri);
@@ -21,3 +21,5 @@ class Database {
         return $this->collection;
     }
 }
+
+// mongodb+srv://users:182009@xanzzviell.jrgddli.mongodb.net/?appName=XanzzViell

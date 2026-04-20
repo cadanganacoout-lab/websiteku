@@ -3,7 +3,7 @@
         'name' => 'xanzz/kelass',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '5aeedf13ad6e94780d85821751b3aca0fc710f60',
+        'reference' => '1fa02bb42ef466c35f76f8fc59303f7664c85cb6',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -46,7 +46,7 @@
         'xanzz/kelass' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '5aeedf13ad6e94780d85821751b3aca0fc710f60',
+            'reference' => '1fa02bb42ef466c35f76f8fc59303f7664c85cb6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
