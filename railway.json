@@ -1,0 +1,11 @@
+{
+  "$schema": "https://railway.com",
+  "build": {
+    "builder": "DOCKER"
+  },
+  "deploy": {
+    "startCommand": "apache2-foreground",
+    "restartPolicyType": "ON_FAILURE",
+    "healthcheckPath": "/"
+  }
+}
